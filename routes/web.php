@@ -24,5 +24,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/', 'ManageUserController@list')->name('list');
+        Route::post('/save', 'ManageUserController@save')->name('save');
+        Route::get('/delete/{id}', 'ManageUserController@delete')->name('delete');
     });
 });

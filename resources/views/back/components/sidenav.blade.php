@@ -393,7 +393,7 @@
                         </svg><!--end::Svg Icon--></span>
                         <span class="menu-text">Users</span>
                         <span class="menu-label">
-                            <span class="label label-rounded label-primary" data-toggle="tooltip" title="Users">600</span>
+                            <span class="label label-rounded label-primary" data-toggle="tooltip" title="Users">{{count(\App\Models\User::all())}}</span>
                         </span>
                         <i class="menu-arrow"></i>
                     </a>
