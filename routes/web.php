@@ -27,4 +27,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/save', 'ManageUserController@save')->name('save');
         Route::get('/delete/{id}', 'ManageUserController@delete')->name('delete');
     });
+
+
+    Route::prefix('roles')->name('role.')->group(function () {
+        Route::get('/', 'RoleController@list')->name('list');
+    });
+    
 });

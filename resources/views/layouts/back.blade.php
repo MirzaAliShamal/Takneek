@@ -27,7 +27,8 @@
 		<link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
-
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"/>
 		<!--end::Layout Themes-->
 		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 
@@ -2021,7 +2022,7 @@
 
 			<!--begin::Header-->
 			<div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
-				<h4 class="font-weight-bold m-0">Add Space</h4>
+				<h4 class="font-weight-bold m-0">Add User</h4>
 				<a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel_close">
 					<i class="ki ki-close icon-xs text-muted"></i>
 				</a>
@@ -2057,12 +2058,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <label>Role</label>
-                                <select  class="form-control" id="role">
-                                    <option value="guest">Guest</option>
-                                    <option value="visitor">Visitor</option>
-                                    <option value="member">Member</option>
-                                    <option value="employee">Employee</option>
-                                    <option value="km_staff">Km staff</option>
+                                <select  class="form-control" id="role" name="role">
+                                    @foreach(roles() as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @endforeach
 
                                 </select>
                                 <span class="form-text text-muted">Please select role</span>
@@ -2095,7 +2094,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <label>Password:</label>
                                 <div class="input-group">
                                     <input name="password" type="text" class="form-control" readonly id="p" onclick='document.getElementById("p").value = Password.generate(16)' placeholder="click to see" />
@@ -2115,19 +2114,19 @@
                             <div class="col-lg-6">
                                 <label>ID Proof:</label>
                                 <div class="input-group">
-                                    <input id="id_proof" type="file" class="form-control"  name="id_proof" placeholder="Select time" />
+                                    <input id="id_proof" type="file" class="form-control dropify"  name="id_proof" placeholder="Select time" />
                                 </div>
                                 <span class="form-text text-muted">ID Proof</span>
                             </div>
                             <div class="col-lg-6">
                                 <label>Profile Picture:</label>
                                 <div class="input-group">
-                                    <input id="profile_picture" type="file" class="form-control"  name="profile_picture" />
+                                    <input id="profile_picture" type="file" class="form-control dropify"  name="profile_picture" />
                                 </div>
                                 <span class="form-text text-muted">Profile Picture:</span>
                             </div>
                         </div>
-
+                        <h3>Optional</h3>
                         <div class="form-group row">
                             <div class="col-lg-6">
                                 <label>Website:</label>
@@ -2180,9 +2179,8 @@
 
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-primary mr-2 save" id="save">Save</button>
-                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                <div class="col-lg-12 text-center">
+                                    <button type="submit" class="btn btn-primary mr-2 save" id="save">Add User</button>
                                 </div>
                             </div>
                         </div>
@@ -2276,7 +2274,8 @@
 		<script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-touchspin.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/features/charts/apexcharts.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/features/calendar/external-events.js') }}"></script>
-
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 		<!--end::Page Vendors-->
 
 		<!--begin::Page Scripts(used by this page)-->
@@ -2331,7 +2330,7 @@
 
             $('#user_form').on('submit',function (e){
                 e.preventDefault()
-
+                $('.save').text('Loading...');
                 var data=new FormData(this)
 
                 $.ajax({
@@ -2345,7 +2344,10 @@
                     contentType: false,
                     cache: false,
                     success:function (data){
-                        console.log(data)
+                        console.log(data);
+                		$('.save').text('Add User');
+                        toastr.success("User has been created.");
+
                         $('.ki-close').click()
                         // $('#mybody').append(data)
 
@@ -2383,7 +2385,8 @@
                             '                        </td>\n'+
                             '                    </tr>'
 
-                        $('#mybody').prepend(html)
+                        $('#mybody').prepend(html);
+                        location.reload();
                     }
                 })
             })
@@ -2405,6 +2408,9 @@
                     }
                 })
             })
+
+
+            $('.dropify').dropify();
         </script>
 
     </body>

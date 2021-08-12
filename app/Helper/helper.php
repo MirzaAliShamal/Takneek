@@ -1,6 +1,8 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 use App\Models\Setting;
 
 
@@ -12,6 +14,10 @@ use App\Models\Setting;
         return $path.'/'.$name;
     }
 
+    function roles()
+    {
+        return Role::all();
+    }
 
     function setting()
     {
@@ -25,5 +31,18 @@ use App\Models\Setting;
     }
 
 
+        
+    function sendMail($data)
+    {
+        if (array_key_exists("pdf",$data)) {
+            $mail = Mail::send($data['view'], ['data' => $data['data']], function ($message) use ($data) {
+                $message->to($data['to'], $data['name'])->subject($data['subject'])->attachData($data['pdf']->output(), "invoice.pdf");
+            });
+        }else {
+            $mail = Mail::send($data['view'], ['data' => $data['data']], function ($message) use ($data) {
+                $message->to($data['to'], $data['name'])->subject($data['subject']);
+            });
+        }
+    }
 
 ?>
