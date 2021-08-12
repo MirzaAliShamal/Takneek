@@ -2036,136 +2036,153 @@
 				<div class="offcanvas-wrapper mb-5 scroll-pull">
 
 					<!--begin::Form-->
-                    <form class="form">
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label>Multiple File Upload</label>
-                                <div class="dropzone dropzone-default dropzone-primary" id="kt_dropzone_2">
-                                    <div class="dropzone-msg dz-message needsclick">
-                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                        <span class="dropzone-msg-desc">Upload up to 10 files</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <form  id="user_form" action="{{route('user.save')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+{{--                        <div class="form-group row">--}}
+{{--                            <div class="col-lg-12">--}}
+{{--                                <label>Multiple File Upload</label>--}}
+{{--                                <div class="dropzone dropzone-default dropzone-primary" id="kt_dropzone_2">--}}
+{{--                                    <div class="dropzone-msg dz-message needsclick">--}}
+{{--                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>--}}
+{{--                                        <span class="dropzone-msg-desc">Upload up to 10 files</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <div class="col-lg-6">
-                                <label>Name:</label>
-                                <input type="email" class="form-control" placeholder="Space Name" />
-                                <span class="form-text text-muted">Please enter space name</span>
+                                <label> Full Name:</label>
+                                <input name="name" type="text" class="form-control" placeholder="Enter Name" />
+                                <span class="form-text text-muted">Please enter Name</span>
                             </div>
                             <div class="col-lg-6">
-                                <label>Location</label>
-                                <select class="form-control" id="kt_select2_1" name="param">
-                                    <option value="AK">Alaska</option>
-                                    <option value="HI">Hawaii</option>
-                                    <option value="CA">California</option>
-                                    <option value="NV">Nevada</option>
-                                    <option value="OR">Oregon</option>
-                                    <option value="WA">Washington</option>
-                                    <option value="AZ">Arizona</option>
-                                    <option value="CO">Colorado</option>
+                                <label>Role</label>
+                                <select  class="form-control" id="role">
+                                    <option value="guest">Guest</option>
+                                    <option value="visitor">Visitor</option>
+                                    <option value="member">Member</option>
+                                    <option value="employee">Employee</option>
+                                    <option value="km_staff">Km staff</option>
+
                                 </select>
-                                <span class="form-text text-muted">Please select type</span>
+                                <span class="form-text text-muted">Please select role</span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-lg-6">
-                                <label>Duration:</label>
+                                <label>Email:</label>
                                 <div class="input-group">
-                                    <select class="form-control" id="kt_select2_1" name="param">
-                                    <option value="AK">1 Hour</option>
-                                    <option value="HI">1 Day</option>
-                                    <option value="CA">5 Days</option>
-                                    <option value="NV">1 Week</option>
-                                    <option value="OR">1 Month</option>
-                                    </select>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="la la-map-marker"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span class="form-text text-muted">Duration</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Price:</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Enter your postcode" />
+                                    <input name="email" type="email" class="form-control" placeholder="Enter your Email" />
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="la la-bookmark-o"></i>
                                         </span>
                                     </div>
                                 </div>
-                                <span class="form-text text-muted">Please enter your price/hour</span>
+                                <span class="form-text text-muted">Please enter your email</span>
                             </div>
-                        </div>
-                        <div class="form-group row">
                             <div class="col-lg-6">
-                                <label>Buffer Time Before:</label>
+                                <label>Mobile Number:</label>
                                 <div class="input-group">
-                                    <input id="kt_touchspin_2" type="text" class="form-control" value="55" name="demo0" placeholder="Select time" />
+                                    <input name="mobile_no" type="text" class="form-control" placeholder="Enter your Mobile Number" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-bookmark-o"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                                <span class="form-text text-muted">Buffer Time Before</span>
+                                <span class="form-text text-muted">Please enter your Mobile Number</span>
                             </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-lg-6">
-                                <label>Buffer Time After:</label>
+                                <label>Password:</label>
                                 <div class="input-group">
-                                    <input id="kt_touchspin_2" type="text" class="form-control" value="55" name="demo0" placeholder="Select time" />
+                                    <input name="password" type="text" class="form-control" readonly id="p" onclick='document.getElementById("p").value = Password.generate(16)' placeholder="click to see" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-bookmark-o"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                                <span class="form-text text-muted">Buffer Time After:</span>
+                                <span class="form-text text-muted">To Get Password click on this input</span>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-3 col-form-label">With Icon</label>
-                            <div class="col-3">
-                                <span class="switch switch-sm switch-icon">
-                                    <label>
-                                        <input type="checkbox" checked="checked" name="select" />
-                                        <span></span>
-                                    </label>
-                                </span>
+                            <div class="col-lg-6">
+
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-lg-6">
-                                <label>User Group:</label>
-                                <div class="radio-inline">
-                                    <label class="radio radio-solid">
-                                    <input type="radio" name="example_2" checked="checked" value="2" />
-                                    <span></span>Sales Person</label>
-                                    <label class="radio radio-solid">
-                                    <input type="radio" name="example_2" value="2" />
-                                    <span></span>Customer</label>
+                                <label>ID Proof:</label>
+                                <div class="input-group">
+                                    <input id="id_proof" type="file" class="form-control"  name="id_proof" placeholder="Select time" />
                                 </div>
-                                <span class="form-text text-muted">Please select user group</span>
+                                <span class="form-text text-muted">ID Proof</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Profile Picture:</label>
+                                <div class="input-group">
+                                    <input id="profile_picture" type="file" class="form-control"  name="profile_picture" />
+                                </div>
+                                <span class="form-text text-muted">Profile Picture:</span>
                             </div>
                         </div>
-                        <!-- begin: Example Code-->
-                        <div class="example-code mt-10">
-                            <ul class="example-nav nav nav-tabs nav-bold nav-tabs-line nav-tabs-line-2x">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#example_code_html">HTML</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="example_code_html" role="tabpanel">
-                                    <div class="example-highlight">
-                                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Website:</label>
+                                <div class="input-group">
+                                    <input id="website" type="text" class="form-control"  name="website" placeholder="website url" />
                                 </div>
+                                <span class="form-text text-muted">Website url</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Facebook:</label>
+                                <div class="input-group">
+                                    <input id="facebook" type="text" class="form-control"  name="facebook" placeholder="Facebook Url" />
+                                </div>
+                                <span class="form-text text-muted">Facebook Url:</span>
                             </div>
                         </div>
-                        <!-- end: Example Code-->
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Instagram:</label>
+                                <div class="input-group">
+                                    <input id="instagram" type="text" class="form-control"  name="instagram" placeholder="instagram url" />
+                                </div>
+                                <span class="form-text text-muted">Instagram url</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Youtube:</label>
+                                <div class="input-group">
+                                    <input id="youtube" type="text" class="form-control"  name="youtube" placeholder="youtube Url" />
+                                </div>
+                                <span class="form-text text-muted">Youtube Url:</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Twitter:</label>
+                                <div class="input-group">
+                                    <input id="twitter" type="text" class="form-control"  name="twitter" placeholder="twitter url" />
+                                </div>
+                                <span class="form-text text-muted">Twitter url</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Company:</label>
+                                <div class="input-group">
+                                    <input id="company" type="text" class="form-control"  name="company" placeholder="company" />
+                                </div>
+                                <span class="form-text text-muted">Company:</span>
+                            </div>
+                        </div>
+
 
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <button type="reset" class="btn btn-primary mr-2">Save</button>
+                                    <button type="submit" class="btn btn-primary mr-2 save" id="save">Save</button>
                                     <button type="reset" class="btn btn-secondary">Cancel</button>
-                                </div>
-                                <div class="col-lg-6 text-lg-right">
-                                    <button type="reset" class="btn btn-danger">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -2176,12 +2193,6 @@
 
 				<!--end::Wrapper-->
 
-				<!--begin::Purchase-->
-				<div class="offcanvas-footer">
-					<a href="https://1.envato.market/EA4JP" target="_blank" class="btn btn-block btn-danger btn-shadow font-weight-bolder text-uppercase">Buy Metronic Now!</a>
-				</div>
-
-				<!--end::Purchase-->
 			</div>
 
 			<!--end::Content-->
@@ -2270,6 +2281,132 @@
 
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+
+        <script>
+            var Password = {
+
+                _pattern : /[a-zA-Z0-9_\-\+\.]/,
+
+
+                _getRandomByte : function()
+                {
+                    // http://caniuse.com/#feat=getrandomvalues
+                    if(window.crypto && window.crypto.getRandomValues)
+                    {
+                        var result = new Uint8Array(1);
+                        window.crypto.getRandomValues(result);
+                        return result[0];
+                    }
+                    else if(window.msCrypto && window.msCrypto.getRandomValues)
+                    {
+                        var result = new Uint8Array(1);
+                        window.msCrypto.getRandomValues(result);
+                        return result[0];
+                    }
+                    else
+                    {
+                        return Math.floor(Math.random() * 256);
+                    }
+                },
+
+                generate : function(length)
+                {
+                    return Array.apply(null, {'length': length})
+                        .map(function()
+                        {
+                            var result;
+                            while(true)
+                            {
+                                result = String.fromCharCode(this._getRandomByte());
+                                if(this._pattern.test(result))
+                                {
+                                    return result;
+                                }
+                            }
+                        }, this)
+                        .join('');
+                }
+
+            };
+
+            $('#user_form').on('submit',function (e){
+                e.preventDefault()
+
+                var data=new FormData(this)
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    method:'post',
+                    url:"{{route('user.save')}}",
+                    data:data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success:function (data){
+                        console.log(data)
+                        $('.ki-close').click()
+                        // $('#mybody').append(data)
+
+
+                        var html='<tr>\n' +
+                            '                        <td class="pl-0 py-7">\n' +
+                            '                            <label class="checkbox checkbox-lg checkbox-inline">\n' +
+                            '                                <input type="checkbox" value="1" />\n' +
+                            '                                <span></span>\n' +
+                            '                            </label>\n' +
+                            '                        </td>\n' +
+                            '                        <td class="pl-0">\n' +
+                            '                            <div class="symbol symbol-50 symbol-light mt-1">\n' +
+                            '                                <span class="symbol-label">\n' +
+                            '                                    <img src="" class="img-fluid" width="60px" alt="" />\n' +
+                            '                                </span>\n' +
+                            '                            </div>\n' +
+                            '                        </td>\n' +
+                            '                        <td class="pl-0">\n' +
+                            '                            '+data.name+'\n' +
+                            '                        </td>\n' +
+                            '                        <td  class=text-center>\n' +
+                            '                            '+data.email+'\n' +
+                            '                        </td>\n' +
+                            '                        <td  class=text-center>\n' +
+                            '                            '+'N/A'+'\n' +
+                            '                        </td>\n' +
+                            '<td class="text-right pr-0">\n' +
+                            '                            <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" data-toggle="tooltip" data-theme="dark" title="Edit">\n' +
+                            '                            <i class="fa fa-edit text-primary"></i>\n' +
+                            '                            </a>\n' +
+                            '                            <a href="#" data-id='+data.id+' class="btn user_delete btn-icon btn-light btn-hover-primary btn-sm" data-toggle="tooltip" data-theme="dark" title="Delete">\n' +
+                            '                            <i class="fa fa-trash text-danger"></i>\n' +
+                            '                            </a>\n' +
+                            '                        </td>\n'+
+                            '                    </tr>'
+
+                        $('#mybody').prepend(html)
+                    }
+                })
+            })
+
+            $(document).on('click','.user_delete',function (e){
+                e.preventDefault()
+                var thiss=$(this)
+                var id=$(this).attr('data-id')
+                var url="{{route('user.delete',':id')}}"
+                url=url.replace(':id',id)
+                $.ajax({
+                    method:'get',
+                    url:url,
+                    success:function (data)
+                    {
+                            thiss.closest('tr').remove();
+                        
+                        console.log('delete')
+                    }
+                })
+            })
+        </script>
+
     </body>
 
 </html>
