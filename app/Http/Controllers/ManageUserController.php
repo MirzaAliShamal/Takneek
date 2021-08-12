@@ -36,7 +36,7 @@ class ManageUserController extends Controller
         $user=User::create([
            'name'=>$req->name,
            'email'=>$req->email,
-           'password'=>$req->password,
+           'password'=>bcrypt($req->password),
            'mobile_no'=>$req->mobile_no,
            'id_proof'=>$value1 ?? 'N/A',
            'profile_picture'=>$value2 ??'N/A',
