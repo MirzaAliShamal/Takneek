@@ -41,6 +41,7 @@ class ManageUserController extends Controller
         }
         $user = User::create([
            'name'=>$req->name,
+           'role_id'=>$req->role,
            'email'=>$req->email,
            'password'=>Hash::make($req->password),
            'mobile_no'=>$req->mobile_no,
@@ -56,6 +57,7 @@ class ManageUserController extends Controller
 
 
         $user->assignRole($req->role);
+
 
         sendMail([
                 'view' => 'email.admin.sub_admin',
@@ -79,6 +81,11 @@ class ManageUserController extends Controller
     {
         User::find($id)->delete();
         return response()->json('delete');
+    }
+
+    public function permissions(Request $request)
+    {
+
     }
 
 }

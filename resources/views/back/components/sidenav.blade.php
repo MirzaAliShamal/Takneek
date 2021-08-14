@@ -149,7 +149,7 @@
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="javascript:;" class="menu-link menu-toggle">
+                    <a href="##" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon svg-icon-primary svg-icon-2x">
 
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
@@ -175,14 +175,24 @@
                                 </span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="http://localhost/km/index.php?page=coworkings" class="menu-link">
+                                <a href="{{route('coworking.list')}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
                                     <span class="menu-text">Spaces</span>
                                     <span class="menu-label">
-                                        <span class="label label-rounded label-primary">8</span>
+                                        <span class="label label-rounded label-primary">{{\App\Models\Coworking::all()->count()}}</span>
                                     </span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{route('location.list')}}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Add Location</span>
+
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
