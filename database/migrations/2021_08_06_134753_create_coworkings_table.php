@@ -15,14 +15,14 @@ class CreateCoworkingsTable extends Migration
     {
         Schema::create('coworkings', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
-            $table->text('description');
-            $table->string('location');
-            $table->string('duration');
-            $table->float('price');
-            $table->integer('buffer_time');
-            $table->integer('quantity');
-            $table->integer('reserver_space');
+            $table->string('text')->nullable();
+            $table->text('description')->nullable();
+            $table->string('location')->nullable();
+            $table->string('duration')->nullable();
+            $table->float('price')->nullable();
+            $table->integer('buffer_time')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('reserver_space')->nullable();
             $table->boolean('status')->default(1)->comment('1. Active, 0. Deactivated');
             $table->timestamps();
         });
