@@ -40,19 +40,19 @@ class ManageUserController extends Controller
             $value2=uploadFile($file2, 'user_images');
         }
         $user = User::create([
-           'name'=>$req->name,
-           'role_id'=>$req->role,
-           'email'=>$req->email,
-           'password'=>Hash::make($req->password),
-           'mobile_no'=>$req->mobile_no,
-           'id_proof'=>$value1 ?? 'N/A',
-           'profile_picture'=>$value2 ??'N/A',
-           'website'=>$req->website,
-           'facebook'=>$req->facebook,
-           'instagram'=>$req->instagram,
-           'twitter'=>$req->twitter,
-           'youtube'=>$req->youtube,
-           'company'=>$req->company,
+            'name'=>$req->name,
+            'role_id'=>$req->role,
+            'email'=>$req->email,
+            'password'=>Hash::make($req->password),
+            'mobile_no'=>$req->mobile_no,
+            'id_proof'=>$value1 ?? 'N/A',
+            'profile_picture'=>$value2 ??'N/A',
+            'website'=>$req->website,
+            'facebook'=>$req->facebook,
+            'instagram'=>$req->instagram,
+            'twitter'=>$req->twitter,
+            'youtube'=>$req->youtube,
+            'company'=>$req->company,
         ]);
 
 
@@ -60,16 +60,16 @@ class ManageUserController extends Controller
 
 
         sendMail([
-                'view' => 'email.admin.sub_admin',
-                'to' => $user->email,
-                'subject' => 'Your profile has been created',
-                'name' => 'Laravel',
-                'data' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'password' => $req->password,
-                ]
-            ]);
+            'view' => 'email.admin.sub_admin',
+            'to' => $user->email,
+            'subject' => 'Your profile has been created',
+            'name' => 'Laravel',
+            'data' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $req->password,
+            ]
+        ]);
 
 
 
