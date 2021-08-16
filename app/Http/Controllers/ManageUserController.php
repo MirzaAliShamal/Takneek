@@ -41,7 +41,6 @@ class ManageUserController extends Controller
         }
         $user = User::create([
             'name'=>$req->name,
-            'role_id'=>$req->role,
             'email'=>$req->email,
             'password'=>Hash::make($req->password),
             'mobile_no'=>$req->mobile_no,
