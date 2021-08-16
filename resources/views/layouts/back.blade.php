@@ -2458,7 +2458,7 @@
             <!--begin::Header-->
             <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
                 <h4 class="font-weight-bold m-0">Add User</h4>
-                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel_close">
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel1_close">
                     <i class="ki ki-close icon-xs text-muted"></i>
                 </a>
             </div>
@@ -2485,7 +2485,7 @@
                                 <label>Role</label>
                                 <select  class="form-control" id="role" name="role">
                                     @foreach(roles() as $role)
-                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                                     @endforeach
 
                                 </select>
@@ -2712,7 +2712,7 @@
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
 		<script src="{{ asset('assets/plugins/multipleImage/image-uploader.min.js') }}"></script>
 
-        <
+        
 
 
 
@@ -2821,7 +2821,9 @@
                             '                    </tr>'
 
                         $('#mybody').prepend(html);
-                        location.reload();
+                        // location.reload();
+                        
+                        toastr.success("User has been created.");
                     }
                 })
             })
