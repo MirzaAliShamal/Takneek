@@ -13,78 +13,77 @@ class ManageUserController extends Controller
     public function list(Request $req)
     {
         $roles = Role::all();
-        $list = User::orderBy('id','desc')->get();
+        $list = User::where('id', '!=', auth()->user()->id)->orderBy('id','desc')->get();
 
-        return view('back.users.list', get_defined_vars());
+        return view('back.user.list', get_defined_vars());
     }
-    public function save(Request $req)
+
+    public function add()
     {
+        $roles = Role::all();
 
+        return response()->json(view('back.user.add', get_defined_vars())->render(), 200);
+    }
 
+    public function edit($id = null)
+    {
+        $roles = Role::all();
+        $user = User::find($id);
 
-        $validate=$this->validate($req,[
-            'profile_picture'=>'required',
-            'email'=>'required|unique:users',
-            'name'=>'required',
-            'password'=>'required',
-        ]);
+        return response()->json(view('back.user.edit', get_defined_vars())->render(), 200);
+    }
 
-        if ($req->hasFile('id_proof'))
-        {
-            $file1=$req->id_proof;
-            $value1=uploadFile($file1, 'user_images');
+    public function save(Request $req, $id = null)
+    {
+        if (is_null($id)) {
+            $user = new User();
+        } else {
+            $user = User::find($id);
         }
-        if ($req->hasFile('profile_picture'))
-        {
-            $file2=$req->profile_picture;
-            $value2=uploadFile($file2, 'user_images');
+        $user->name = $req->name;
+        $user->email = $req->email;
+        if (is_null($id)) {
+            $user->password = Hash::make("12345678");
         }
-        $user = User::create([
-            'name'=>$req->name,
-            'email'=>$req->email,
-            'password'=>Hash::make($req->password),
-            'mobile_no'=>$req->mobile_no,
-            'id_proof'=>$value1 ?? 'N/A',
-            'profile_picture'=>$value2 ??'N/A',
-            'website'=>$req->website,
-            'facebook'=>$req->facebook,
-            'instagram'=>$req->instagram,
-            'twitter'=>$req->twitter,
-            'youtube'=>$req->youtube,
-            'company'=>$req->company,
-        ]);
+        $user->mobile_no = $req->mobile_no;
+        $user->website = $req->website;
+        $user->facebook = $req->facebook;
+        $user->instagram = $req->instagram;
+        $user->twitter = $req->twitter;
+        $user->youtube = $req->youtube;
+        $user->company = $req->company;
+        if ($req->hasFile('profile_picture')) {
+            $profile = $req->profile_picture;
+            $user->profile_picture = uploadFile($profile, 'user_images');
+        } else {
+            $user->profile_picture = "default.png";
+        }
+        $user->save();
 
 
         $user->assignRole($req->role);
 
-
-        sendMail([
-            'view' => 'email.admin.sub_admin',
-            'to' => $user->email,
-            'subject' => 'Your profile has been created',
-            'name' => 'Laravel',
-            'data' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'password' => $req->password,
-            ]
-        ]);
+        return redirect()->back();
 
 
-
-        $view=view('back.users.ajax.user_table',['item'=>$user]);
-        return response()->json($user);
+        // sendMail([
+        //     'view' => 'email.admin.sub_admin',
+        //     'to' => $user->email,
+        //     'subject' => 'Your profile has been created',
+        //     'name' => 'Laravel',
+        //     'data' => [
+        //         'name' => $user->name,
+        //         'email' => $user->email,
+        //         'password' => $req->password,
+        //     ]
+        // ]);
 
     }
+
     public function delete($id)
     {
         User::find($id)->delete();
         return response()->json('delete');
-    }
-
-    public function permissions(Request $request)
-    {
-
     }
 
 }

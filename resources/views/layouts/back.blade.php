@@ -12,6 +12,7 @@
 		<!--begin::Page Vendors Styles(used by this page)-->
 		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/plugins/custom/uppy/uppy.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Page Vendors Styles-->
 
 		<!--begin::Global Theme Styles(used by all pages)-->
@@ -2084,7 +2085,6 @@
         <!-- spaces start!-->
 
         <div id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
-
             <!--begin::Header-->
             <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
                 <h4 class="font-weight-bold m-0">Add Spaces</h4>
@@ -2100,531 +2100,15 @@
 
                 <!--begin::Wrapper-->
                 <div class="offcanvas-wrapper mb-5 scroll-pull">
-
-                    <!--begin::Form-->
-                    <form class="space_form" id="space_form"  action="{{route('coworking.save')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="form-group row">
-                            <div class="col-lg-12 text-center">
-                                <label> Image:</label>
-                                <input name="first_img" type="file" class="form-control dropify" />
-                                <span class="form-text text-muted">Please Select image</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label> Full Name:</label>
-                                <input required name="name" type="text" class="form-control" placeholder="Enter Name" />
-                                <span class="form-text text-muted">Please enter Name</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-
-                            <div class="col-lg-12">
-                                <label>Location</label>
-                                @php $locations=\App\Models\Location::all() @endphp
-                                <select required  class="form-control" id="location" name="location">
-                                    @foreach($locations as $list)
-                                        <option value="{{$list->location}}">{{$list->location}}</option>
-                                    @endforeach
-
-                                </select>
-                                <span class="form-text text-muted">Please select Location</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Duration:</label>
-                                <select required class="form-control" id="duration" name="duration">
-                                    <option value="5">5 min</option>
-                                    <option value="10">10 min</option>
-                                    <option value="15">15 min</option>
-                                    <option value="20">20 min</option>
-                                    <option value="25">25 min</option>
-                                    <option value="30">30 min</option>
-                                    <option value="35">35 min</option>
-                                    <option value="40">40 min</option>
-                                    <option value="45">45 min</option>
-                                    <option value="50">50 min</option>
-                                    <option value="55">55 min</option>
-                                    <option value="60">60 min</option>
-
-                                </select>
-                                <span class="form-text text-muted">Please select Duration</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Price:</label>
-                                <input required name="price" type="number" class="form-control" placeholder="Enter Price" />
-                                <span class="form-text text-muted">Please Enter Price</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Buffer Before Time:</label>
-                                <select  required name="buffer_before_time" type="text" class="form-control" readonly id="buffer_before_time">
-
-                                    <option value="5">5 min</option>
-                                    <option value="10">10 min</option>
-                                    <option value="15">15 min</option>
-                                    <option value="20">20 min</option>
-                                    <option value="25">25 min</option>
-                                    <option value="30">30 min</option>
-                                    <option value="35">35 min</option>
-                                    <option value="40">40 min</option>
-                                    <option value="45">45 min</option>
-                                    <option value="50">50 min</option>
-                                    <option value="55">55 min</option>
-                                    <option value="60">60 min</option>
-
-                                </select>
-                                <span class="form-text text-muted">Please select Buffer Before Time</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Buffer After Time:</label>
-                                <select required name="buffer_after_time" type="text" class="form-control" readonly id="buffer_after_time">
-
-                                    <option value="5">5 min</option>
-                                    <option value="10">10 min</option>
-                                    <option value="15">15 min</option>
-                                    <option value="20">20 min</option>
-                                    <option value="25">25 min</option>
-                                    <option value="30">30 min</option>
-                                    <option value="35">35 min</option>
-                                    <option value="40">40 min</option>
-                                    <option value="45">45 min</option>
-                                    <option value="50">50 min</option>
-                                    <option value="55">55 min</option>
-                                    <option value="60">60 min</option>
-
-                                </select>
-                                <span class="form-text text-muted">Please select Buffer After Time</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Minimum Capacity:</label>
-                                <div class="center">
-                                    <p>
-                                    </p>
-                                    <div class="input-group">
-                                          <span class="input-group-btn">
-                                              <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="min_capacity" style="height: 36px">
-                                                <span class="fa fa-minus"></span>
-                                              </button>
-                                          </span>
-                                        <input required type="number" name="min_capacity" class="form-control text-center min_capacity input-number" value="1"
-                                               min="1" max="1000000" >
-                                        <span class="input-group-btn">
-                                          <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="min_capacity" style="height: 36px">
-                                              <span class="fa fa-plus"></span>
-                                          </button>
-                                        </span>
-                                    </div>
-                                    <p></p>
-                                </div>
-                                <span class="form-text text-muted">Minimum Capacity</span>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label>Maximum Capacity:</label>
-                                <div class="center">
-                                    <p>
-                                    </p>
-                                    <div class="input-group">
-                                          <span class="input-group-btn">
-                                              <button type="button" class="btn btn-danger btn-number2" data-type="minus" data-field="max_capacity" style="height: 36px">
-                                                <span class="fa fa-minus"></span>
-                                              </button>
-                                          </span>
-                                        <input type="number" name="max_capacity" class="form-control text-center max_capacity" value="1"
-                                               min="1" max="1000000" >
-                                        <span class="input-group-btn">
-                                          <button type="button" class="btn btn-success btn-number2" data-type="plus" data-field="max_capacity" style="height: 36px">
-                                              <span class="fa fa-plus"></span>
-                                          </button>
-                                        </span>
-                                    </div>
-                                    <p></p>
-                                </div>
-                                <span class="form-text text-muted">Maximum Capacity</span>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row" id="capacity_question_div">
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-10 mt-2" style="border: 1px solid #9a9b9d">
-                                <p class="text-justify pt-1 mr-auto">Show "Bringing anyone with you" option ?<span class="switch switch-icon switch-sm float-right">
-                                     <label>
-                                       <input type="checkbox" class="font-size-xs" name="Bringing_anyone_with_you" value="yes"/>
-                                       <span></span>
-                                     </label>
-                                </span></p>
-
-                            </div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-10 mt-2" style="border: 1px solid #9a9b9d">
-                                <p class="text-justify pt-1 mr-auto">The price will multiply by the number of people ?<span class="switch switch-icon switch-sm float-right">
-                                     <label>
-                                       <input type="checkbox" class="font-size-xs" name="price_multiple_by_number" value="yes"/>
-                                       <span></span>
-                                     </label>
-                                </span></p>
-
-                            </div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-10 mt-2" style="border: 1px solid #9a9b9d">
-                                <p class="text-justify pt-1 mr-auto">Show service on site ?<span class="switch switch-icon switch-sm float-right">
-                                     <label>
-                                       <input type="checkbox" class="font-size-xs" name="service_on_site" value="yes"/>
-                                       <span></span>
-                                     </label>
-                                </span></p>
-
-                            </div>
-                            <div class="col-lg-1"></div>
-
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label>Set recurring appointment:</label>
-                                <div class="input-group">
-                                    <select required id="recurring" type="text" class="form-control"  name="recurring_appointment">
-                                        <option value="">Select One</option>
-                                        <option value="all">All</option>
-                                        <option value="daily">Daily</option>
-                                        <option value="week">Week</option>
-                                        <option value="month">Month</option>
-                                    </select>
-                                </div>
-                                <span class="form-text text-muted">Set recurring appointment:</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label>Description:</label>
-                                <div class="input-group">
-                                    <textarea id="description" type="text" class="form-control"  name="description" placeholder="" rows="3" ></textarea>
-                                </div>
-                                <span class="form-text text-muted">description:</span>
-                            </div>
-                        </div>
-                        <hr>
-                        <h6>Gallary</h6>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label>Gallary:</label>
-
-                                    <div class="input-images"></div>
-
-                                <span class="form-text text-muted">Gallary:</span>
-                            </div>
-                        </div>
-                        <h6>Extras</h6>
-                        <div class="form-group row extra_row">
-                            <input type="hidden" id="total_extra" name="total_extra" class="form-control float-right" value="0">
-                            <div class="col-lg-12 qty_extra">
-
-                                    <p class="text-justify pt-1 mr-auto">Set extra as a mandatory field ?<span class="switch switch-icon switch-sm float-right">
-                                     <label class="show_min_extra">
-                                       <input type="checkbox" class="custom-control-input" id="customSwitches1" name="extra_mandatory" value="yes"/>
-                                       <span></span>
-                                     </label>
-                                </span></p>
-
-                            </div>
-                            <div class="col-lg-12 min_extra_req_div" id="min_extra_req_div" style="display: none">
-                                <label>Minimum required extras:</label>
-                                <div class="center">
-                                    <p>
-                                    </p>
-                                    <div class="input-group">
-                                                  <span class="input-group-btn">
-                                                      <button type="button" class="btn btn-danger btn-number3" data-type="minus" data-field="req_extra" style="height: 36px">
-                                                        <span class="fa fa-minus"></span>
-                                                      </button>
-                                                  </span>
-                                        <input type="text" name="req_extra" class="form-control text-center req_extra input-number3" value="0"
-                                               min="0" max="" >
-                                        <span class="input-group-btn">
-                                                          <button type="button" class="btn btn-success btn-number3" data-type="plus" data-field="req_extra" style="height: 36px">
-                                                              <span class="fa fa-plus"></span>
-                                                          </button>
-                                                        </span>
-                                    </div>
-                                    <p></p>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-12 mt-2">
-                                <button type="button" class="btn btn-primary form-control add_extra">+ Add Extra</button>
-                            </div>
-                            <div class="col-lg-12 mt-2 show_all_extra">
-                                <div class="card ">
-                                    <div class="card-body">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12 show_extra_form_div mt-2">
-
-                                <form id="extra_form" class="extra_form" action="{{route('extra.save')}}" method="post">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <div class="col-lg-12">
-                                            <label>Name:</label>
-                                            <div class="input-group">
-                                                <input id="e_name" type="text" class="form-control e_name"  name="e_name" placeholder="">
-                                            </div>
-                                            <span class="form-text text-muted">Name:</span>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label>Duration:</label>
-                                            <select name="e_duration" type="text" class="form-control e_duration"  id="e_duration">
-
-                                                <option value="5">5 min</option>
-                                                <option value="10">10 min</option>
-                                                <option value="15">15 min</option>
-                                                <option value="20">20 min</option>
-                                                <option value="25">25 min</option>
-                                                <option value="30">30 min</option>
-                                                <option value="35">35 min</option>
-                                                <option value="40">40 min</option>
-                                                <option value="45">45 min</option>
-                                                <option value="50">50 min</option>
-                                                <option value="55">55 min</option>
-                                                <option value="60">60 min</option>
-
-                                            </select>
-                                            <span class="form-text text-muted">Duration</span>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label>Price:</label>
-                                            <div class="input-group">
-                                                <input id="e_price" type="number" class="form-control e_price"  name="e_price" placeholder="">
-                                            </div>
-                                            <span class="form-text text-muted">Price:</span>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label>Quantity:</label>
-                                            <div class="input-group">
-                                                <input id="e_qty" type="number" class="form-control e_qty"  name="e_qty" placeholder="">
-                                            </div>
-                                            <span class="form-text text-muted">Quantity:</span>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <label>Description:</label>
-                                            <div class="input-group">
-                                                <textarea rows="3" id="e_desc" type="number" class="form-control e_desc"  name="e_desc" placeholder=""></textarea>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-12 mt-3">
-                                            <button type="button" class="btn btn-default mr-2 cancle_extra" id="cancle-extra">Cancle</button>
-                                            <button type="button" class="btn btn-success mr-2 save_extra" id="save-extra">Add Extra</button>
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-lg-12 text-center">
-                                    <button type="submit" class="btn btn-primary mr-2 save" id="save">Add Space</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <!--end::Form-->
-
                 </div>
 
                 <!--end::Wrapper-->
 
             </div>
-
             <!--end::Content-->
         </div>
 
         <!-- spaces end!-->
-
-        <!-- user start!-->
-
-        <div id="kt_demo_panel1" class="offcanvas offcanvas-right p-10">
-
-            <!--begin::Header-->
-            <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
-                <h4 class="font-weight-bold m-0">Add User</h4>
-                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel1_close">
-                    <i class="ki ki-close icon-xs text-muted"></i>
-                </a>
-            </div>
-
-            <!--end::Header-->
-
-            <!--begin::Content-->
-            <div class="offcanvas-content">
-
-                <!--begin::Wrapper-->
-                <div class="offcanvas-wrapper mb-5 scroll-pull">
-
-                    <!--begin::Form-->
-                    <form  id="user_form" action="{{route('user.save')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label> Full Name:</label>
-                                <input name="name" type="text" class="form-control" placeholder="Enter Name" />
-                                <span class="form-text text-muted">Please enter Name</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Role</label>
-                                <select  class="form-control" id="role" name="role">
-                                    @foreach(roles() as $role)
-                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
-                                    @endforeach
-
-                                </select>
-                                <span class="form-text text-muted">Please select role</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Email:</label>
-                                <div class="input-group">
-                                    <input name="email" type="email" class="form-control" placeholder="Enter your Email" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="la la-bookmark-o"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span class="form-text text-muted">Please enter your email</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Mobile Number:</label>
-                                <div class="input-group">
-                                    <input name="mobile_no" type="text" class="form-control" placeholder="Enter your Mobile Number" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="la la-bookmark-o"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span class="form-text text-muted">Please enter your Mobile Number</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <label>Password:</label>
-                                <div class="input-group">
-                                    <input name="password" type="text" class="form-control" readonly id="p" onclick='document.getElementById("p").value = Password.generate(16)' placeholder="click to see" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <i class="la la-bookmark-o"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <span class="form-text text-muted">To Get Password click on this input</span>
-                            </div>
-                            <div class="col-lg-6">
-
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>ID Proof:</label>
-                                <div class="input-group">
-                                    <input id="id_proof" type="file" class="form-control dropify"  name="id_proof" placeholder="Select time" />
-                                </div>
-                                <span class="form-text text-muted">ID Proof</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Profile Picture:</label>
-                                <div class="input-group">
-                                    <input id="profile_picture" type="file" class="form-control dropify"  name="profile_picture" />
-                                </div>
-                                <span class="form-text text-muted">Profile Picture:</span>
-                            </div>
-                        </div>
-                        <h3>Optional</h3>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Website:</label>
-                                <div class="input-group">
-                                    <input id="website" type="text" class="form-control"  name="website" placeholder="website url" />
-                                </div>
-                                <span class="form-text text-muted">Website url</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Facebook:</label>
-                                <div class="input-group">
-                                    <input id="facebook" type="text" class="form-control"  name="facebook" placeholder="Facebook Url" />
-                                </div>
-                                <span class="form-text text-muted">Facebook Url:</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Instagram:</label>
-                                <div class="input-group">
-                                    <input id="instagram" type="text" class="form-control"  name="instagram" placeholder="instagram url" />
-                                </div>
-                                <span class="form-text text-muted">Instagram url</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Youtube:</label>
-                                <div class="input-group">
-                                    <input id="youtube" type="text" class="form-control"  name="youtube" placeholder="youtube Url" />
-                                </div>
-                                <span class="form-text text-muted">Youtube Url:</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-lg-6">
-                                <label>Twitter:</label>
-                                <div class="input-group">
-                                    <input id="twitter" type="text" class="form-control"  name="twitter" placeholder="twitter url" />
-                                </div>
-                                <span class="form-text text-muted">Twitter url</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Company:</label>
-                                <div class="input-group">
-                                    <input id="company" type="text" class="form-control"  name="company" placeholder="company" />
-                                </div>
-                                <span class="form-text text-muted">Company:</span>
-                            </div>
-                        </div>
-
-
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-lg-12 text-center">
-                                    <button type="submit" class="btn btn-primary mr-2 save" id="save">Add User</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <!--end::Form-->
-
-                </div>
-
-                <!--end::Wrapper-->
-
-            </div>
-
-            <!--end::Content-->
-        </div>
-        <!-- user end!-->
-
-
-
-
 
         <script>
 			var KTAppSettings = {
@@ -2689,6 +2173,7 @@
 
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
+		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 		<script src="https://keenthemes.com/metronic/assets/js/engage_code.js"></script>
 		<!--end::Global Theme Bundle-->
@@ -2706,14 +2191,100 @@
 		<script src="{{ asset('assets/js/pages/features/calendar/external-events.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
 		<!--end::Page Vendors-->
 
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
 		<script src="{{ asset('assets/plugins/multipleImage/image-uploader.min.js') }}"></script>
 
-        
 
+        <script>
+            $(document).on("click", "#modal_toggle", function(e) {
+                e.preventDefault();
+                let elm = $(this);
+                let action = elm.attr('href');
+
+                $.ajax({
+                    type: "GET",
+                    url: action,
+                    success: function (response) {
+                        $(".offcanvas-wrapper").html(response);
+                        imageUploader();
+                        dropify();
+                        $("#kt_demo_panel").addClass("offcanvas-on");
+                    }
+                });
+            });
+            $(document).on("click", "#kt_demo_panel_close", function(e) {
+                $("#kt_demo_panel").removeClass("offcanvas-on");
+            });
+            $(document).on("click", ".edit-item", function(e) {
+                e.preventDefault();
+                let elm = $(this);
+                let action = $(this).attr('href');
+                $.ajax({
+                    type: "GET",
+                    url: action,
+                    success: function (response) {
+                        $(".offcanvas-wrapper").html(response);
+                        imageUploader();
+                        dropify();
+                        $("#kt_demo_panel").addClass("offcanvas-on");
+                    }
+                });
+            });
+
+            // $(document).on("submit", "#space_form", function(e) {
+            //     e.preventDefault();
+            //     let form = $(this);
+            //     let action = $(this).attr('action');
+            //     let formData = new FormData($(this)[0]);
+
+            //     $.ajax({
+            //         type: "POST",
+            //         url: action,
+            //         data: formData,
+            //         processData: false,
+            //         contentType: false,
+            //         success: function (response) {
+            //             console.log(response);
+            //             location.reload(true);
+            //         }
+            //     });
+            // });
+
+            function imageUploader() {
+                $('.input-images').imageUploader({
+                    extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg'],
+                    mimes: ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
+                    maxSize: undefined,
+                    maxFiles: undefined,
+                });
+            }
+            function draggable() {
+                var containers = document.querySelectorAll('.draggable-area');
+                if (containers.length === 0) {
+                    return false;
+                }
+
+                var swappable = new Sortable.default(containers, {
+                    draggable: '.draggable',
+                    handle: '.draggable .draggable-handle',
+                    mirror: {
+                        appendTo: 'body',
+                        constrainDimensions: true
+                    }
+                });
+            }
+            function dropify() {
+                $('.dropify').dropify();
+            }
+            function selectPicker() {
+                $('.managment-picker').selectpicker();
+            }
+            selectPicker();
+        </script>
 
 
         <script>
@@ -2762,418 +2333,8 @@
                 }
 
             };
-
-            $('#user_form').on('submit',function (e){
-                e.preventDefault()
-                $('.save').text('Loading...');
-                var data=new FormData(this)
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    method:'post',
-                    url:"{{route('user.save')}}",
-                    data:data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success:function (data){
-                        console.log(data);
-                		$('.save').text('Add User');
-                        toastr.success("User has been created.");
-
-                        $('.ki-close').click()
-                        // $('#mybody').append(data)
-
-
-                        var html='<tr>\n' +
-                            '                        <td class="pl-0 py-7">\n' +
-                            '                            <label class="checkbox checkbox-lg checkbox-inline">\n' +
-                            '                                <input type="checkbox" value="1" />\n' +
-                            '                                <span></span>\n' +
-                            '                            </label>\n' +
-                            '                        </td>\n' +
-                            '                        <td class="pl-0">\n' +
-                            '                            <div class="symbol symbol-50 symbol-light mt-1">\n' +
-                            '                                <span class="symbol-label">\n' +
-                            '                                    <img src="" class="img-fluid" width="60px" alt="" />\n' +
-                            '                                </span>\n' +
-                            '                            </div>\n' +
-                            '                        </td>\n' +
-                            '                        <td class="pl-0">\n' +
-                            '                            '+data.name+'\n' +
-                            '                        </td>\n' +
-                            '                        <td  class=text-center>\n' +
-                            '                            '+data.email+'\n' +
-                            '                        </td>\n' +
-                            '                        <td  class=text-center>\n' +
-                            '                            '+'N/A'+'\n' +
-                            '                        </td>\n' +
-                            '<td class="text-right pr-0">\n' +
-                            '                            <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" data-toggle="tooltip" data-theme="dark" title="Edit">\n' +
-                            '                            <i class="fa fa-edit text-primary"></i>\n' +
-                            '                            </a>\n' +
-                            '                            <a href="#" data-id='+data.id+' class="btn user_delete btn-icon btn-light btn-hover-primary btn-sm" data-toggle="tooltip" data-theme="dark" title="Delete">\n' +
-                            '                            <i class="fa fa-trash text-danger"></i>\n' +
-                            '                            </a>\n' +
-                            '                        </td>\n'+
-                            '                    </tr>'
-
-                        $('#mybody').prepend(html);
-                        // location.reload();
-                        
-                        toastr.success("User has been created.");
-                    }
-                })
-            })
-
-            $(document).on('click','.user_delete',function (e){
-                e.preventDefault()
-                var thiss=$(this)
-                var id=$(this).attr('data-id')
-                var url="{{route('user.delete',':id')}}"
-                url=url.replace(':id',id)
-                $.ajax({
-                    method:'get',
-                    url:url,
-                    success:function (data)
-                    {
-                            thiss.closest('tr').remove();
-
-                        console.log('delete')
-                    }
-                })
-            })
-
-
-            $('.dropify').dropify();
         </script>
-
-
-    <script>
-        $(document).ready(function (){
-            $('#capacity_question_div').hide()
-            $('.show_extra_form_div').hide()
-            $('.show_all_extra').hide()
-
-        })
-        $('.btn-number').click(function(e){
-            e.preventDefault();
-
-            var fieldName = $(this).attr('data-field');
-            var type      = $(this).attr('data-type');
-            var real_val=$('.min_capacity').val();
-
-
-
-            var input = $("input[name='"+fieldName+"']");
-
-            var currentVal = parseInt($('.min_capacity').val());
-            if (!isNaN(currentVal)) {
-                if(type == 'minus') {
-
-                    if(currentVal > $('.min_capacity').attr('min')) {
-                        $('.min_capacity').val(currentVal - 1).change();
-                        $('.max_capacity').val(currentVal - 1).change();
-                        $('.max_capacity').attr('min',currentVal - 1)
-
-                        var check_min_val=$('.min_capacity').val();
-                        var max_val=$('.max_capacity').val();
-                        $('.max_capacity').attr('min',currentVal + 1)
-                        if (max_val>1 ||check_min_val>1)
-                        {
-                            $('#capacity_question_div').show()
-                        }else if(max_val==1 && check_min_val==1){
-                            $('#capacity_question_div').hide()
-                        }
-                    }
-                    if(parseInt($('.min_capacity').val()) == $('.min_capacity').attr('min')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }else if(type == 'plus') {
-
-                    if(currentVal < $('.min_capacity').attr('max')) {
-                        $('.min_capacity').val(currentVal + 1).change();
-                        $('.max_capacity').val(currentVal + 1).change();
-                        $('.max_capacity').attr('min',currentVal + 1)
-                        var check_min_val=$('.min_capacity').val();
-                        var max_val=$('.max_capacity').val();
-                        $('.max_capacity').attr('min',currentVal + 1)
-                        if (max_val>1 ||check_min_val>1)
-                        {
-                            $('#capacity_question_div').show()
-                        }else if(max_val==1 && check_min_val==1){
-                            $('#capacity_question_div').hide()
-                        }
-
-                    }
-                    if(parseInt($('.min_capacity').val()) == $('.min_capacity').attr('max')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }
-            } else {
-                $('.min_capacity').val(0);
-            }
-        });
-        $('.btn-number2').click(function(e){
-            e.preventDefault();
-
-            var fieldName = $(this).attr('data-field');
-            var type      = $(this).attr('data-type');
-            var real_min_val=$('.min_capacity').val();
-            var real_max_val=$('.max_capacity').val();
-
-
-
-            var input = $("input[name='"+fieldName+"']");
-
-            var currentVal = parseInt($('.max_capacity').val());
-            if (!isNaN(currentVal)) {
-                if(type == 'minus') {
-
-                    if(currentVal > $('.max_capacity').attr('min')) {
-                        $('.max_capacity').val(currentVal - 1).change();
-
-                        var check_min_val=$('.min_capacity').val();
-                        var max_val=$('.max_capacity').val();
-                        $('.max_capacity').attr('min',currentVal + 1)
-                        if (max_val>1 ||check_min_val>1)
-                        {
-                            $('#capacity_question_div').show()
-                        }else if(max_val==1 && check_min_val==1){
-                            $('#capacity_question_div').hide()
-                        }
-                    }
-                    if(parseInt($('.max_capacity').val()) == $('.max_capacity').attr('min')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }else if(type == 'plus') {
-
-                    if(currentVal < $('.max_capacity').attr('max')) {
-                        $('.max_capacity').val(currentVal + 1).change();
-
-                        var check_min_val=$('.min_capacity').val();
-                        var max_val=$('.max_capacity').val();
-                        $('.max_capacity').attr('min',currentVal + 1)
-                        if (max_val>1 ||check_min_val>1)
-                        {
-                            $('#capacity_question_div').show()
-                        }else if(max_val==1 && check_min_val==1){
-                            $('#capacity_question_div').hide()
-                        }
-                    }
-
-
-                    if(parseInt($('.max_capacity').val()) == $('.max_capacity').attr('max')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }
-            } else {
-                $('.max_capacity').val(0);
-            }
-        });
-
-
-        $('.btn-number3').click(function(e){
-            e.preventDefault();
-
-            var fieldName = $(this).attr('data-field');
-            var type      = $(this).attr('data-type');
-
-
-
-
-            var input = $("input[name='"+fieldName+"']");
-
-            var currentVal = parseInt($('.req_extra').val());
-            if (!isNaN(currentVal)) {
-                if(type == 'minus') {
-
-                    if(currentVal > $('.req_extra').attr('min')) {
-                        $('.req_extra').val(currentVal - 1).change();
-
-                    }
-                    if(parseInt($('.req_extra').val()) == $('.req_extra').attr('min')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }else if(type == 'plus') {
-
-                    if(currentVal < $('.req_extra').attr('max')) {
-                        $('.req_extra').val(currentVal + 1).change();
-
-                    }
-
-
-                    if(parseInt($('.req_extra').val()) == $('.req_extra').attr('max')) {
-                        $(this).attr('disabled', true);
-                    }else {
-                        $(this).attr('disabled', false);
-                    }
-
-                }
-            } else {
-                $('.max_capacity').val(0);
-            }
-        });
-
-        $(document).on('click','.add_extra',function (e){
-            e.preventDefault()
-            $('.show_extra_form_div').show()
-            $('.qty_extra').show()
-        })
-        $(document).on('click','.cancle_extra',function (e){
-            e.preventDefault()
-            $('.show_extra_form_div').hide()
-            $('.qty_extra').hide()
-        })
-        $(document).on('click','.save_extra',function (e){
-            e.preventDefault()
-            var thiss=$(this)
-            var url="{{route('extra.save')}}"
-            var e_name=$('#e_name').val()
-            var e_price=$('#e_price').val()
-            var e_desc=$('#e_desc').val()
-            var e_duration=$('#e_duration').val()
-            var e_qty=$('#e_qty').val()
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                method:'post',
-                url:url,
-                data:{e_name:e_name,e_price:e_price,e_desc:e_desc,e_duration:e_duration,e_qty:e_qty},
-                success:function (data)
-                {
-                    console.log(data)
-                    $('.show_extra_form_div').hide()
-                    $('.show_all_extra .card .card-body').append('<div class="row p-0 mt-2" style="background-color: #e5e1e1;border-radius: 5px;">\n' +
-                        '                                            <div class="col-lg-11 p-0 m-0">\n' +
-                        '                                            </div>\n' +
-                        '                                            <div class="col-lg-1 p-0 m-0">\n' +
-                        '                                                <button type="button" data-id='+data.id+' class="btn btn-transparent delete_extra"><i class="fa fa-trash text-danger"></i></button>\n' +
-                        '                                            </div>\n' +
-                        '                                            <div class="col-lg-12">\n' +
-                        '                                                <p class="">Name: '+data.name+'</p>\n' +
-                        '\n' +
-                        '                                            </div>\n' +
-                        '                                            <div class="col-lg-6">\n' +
-                        '                                                <p class="">Quantity:'+data.qty+'</p>\n' +
-                        '\n' +
-                        '                                            </div>\n' +
-                        '                                            <div class="col-lg-6 ml-auto">\n' +
-                        '                                                <p class="">Duration:'+data.duration+'</p>\n' +
-                        '\n' +
-                        '                                            </div>\n' +
-                        '\n' +
-                        '                                        </div>')
-                    $('.show_all_extra').append('<input type="hidden" id='+data.id+' name="extra_id[]" value='+data.id+'>')
-                    $('.show_all_extra').show()
-                    var e_name=$('#e_name').val('')
-                    var e_price=$('#e_price').val('')
-                    var e_desc=$('#e_desc').val('')
-                    var e_duration=$('#e_duration').val('')
-                    var e_qty=$('#e_qty').val('')
-                    total_extras()
-
-                }
-            })
-        })
-
-        $(document).on('click','.delete_extra',function (){
-            var thiss=$(this)
-            var id=$(this).attr('data-id')
-
-            var url="{{route('extra.delete',":id")}}"
-            url=url.replace(':id',id)
-            $.ajax({
-                method:'get',
-                url:url,
-                success:function (data)
-                {
-                    console.log(data)
-                    thiss.closest('.row').remove()
-                    $('#'+id+'').remove()
-                    total_extras()
-                }
-
-            })
-        })
-        function total_extras()
-        {
-                 var i=0
-                $('.show_all_extra .card .card-body .row').each(function (){
-                    i++
-                    $('#total_extra').val(i)
-                })
-            $('.req_extra').attr('max',i)
-
-        }
-
-        $(document).on('click','.show_min_extra',function (){
-            $('.min_extra_req_div').slideToggle()
-            return false
-        })
-
-        $(document).on('click','#save',function (){
-            $('.extra_form').remove()
-            $('#space_form').submit()
-        })
-
-        $('.input-images').imageUploader({
-            extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg'],
-            mimes: ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-            maxSize: undefined,
-            maxFiles: undefined,
-        });
-    </script>
-
-        <script>
-            $(document).on('change','.selectpicker',function (e){
-                e.preventDefault()
-
-                // permissions_ajax_call()
-
-            })
-            $(document).on('change','.permissions',function (e){
-                e.preventDefault()
-
-                permissions_ajax_call()
-
-            })
-
-        function  permissions_ajax_call()
-            {
-                var data=$('#myform').serialize()
-
-                $.ajax({
-                    method:'post',
-                    url:$('#myform').attr('action'),
-                    data:data,
-                    success:function (data){
-                        console.log(data)
-                        console.log('assign permissions')
-                    }
-                })
-            }
-        </script>
-
+    @yield('js')
     </body>
 
 </html>

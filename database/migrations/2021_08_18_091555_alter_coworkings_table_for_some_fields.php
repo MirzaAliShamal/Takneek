@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AlterCoworkingsTableForSomeFields extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('coworkings', function (Blueprint $table) {
+            $table->dropColumn('min_capacity');
+            $table->dropColumn('max_capacity');
+            $table->dropColumn('service_on_site');
+            $table->integer('max_seats')->nullable()->after('buffer_after_time');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('coworkings', function (Blueprint $table) {
+            //
+        });
+    }
+}

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CoworkingImage extends Model
 {
     use HasFactory;
+
     protected $guarded=[];
 }

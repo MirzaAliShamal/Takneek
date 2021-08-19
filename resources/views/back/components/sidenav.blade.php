@@ -420,15 +420,30 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">All User</span>
-
+                                    <span class="menu-text">All Users</span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('role.list') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">All Roles</span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('permission.list') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">All Permissions</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="{{ route('role.list') }}" class="menu-link menu-toggle">
+                    <a href="{{ route('manage.permission') }}" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon svg-icon-primary svg-icon-2x">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -438,7 +453,7 @@
                                     <path d="M7.00036205,18.4995035 C7.21569918,15.5165724 9.36772908,14 11.9907452,14 C14.6506758,14 16.8360465,15.4332455 16.9988413,18.5 C17.0053266,18.6221713 16.9988413,19 16.5815,19 C14.5228466,19 11.463736,19 7.4041679,19 C7.26484009,19 6.98863236,18.6619875 7.00036205,18.4995035 Z" fill="#000000" opacity="0.3"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                        <span class="menu-text">User Role</span>
+                        <span class="menu-text">Manage Role Permission</span>
                         {{-- <i class="menu-arrow"></i> --}}
                     </a>
                 </li>

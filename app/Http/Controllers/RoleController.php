@@ -4,12 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    public function list(Request $req)
+    public function list()
+    {
+        $list = Role::all();
+        return view('back.role.list', get_defined_vars());
+    }
+
+    public function add()
+    {
+        return view('back.role.add', get_defined_vars());
+    }
+
+    public function edit($id = null)
+    {
+        $role = Role::find($id);
+
+        return view('back.role.edit', get_defined_vars());
+    }
+
+    public function save(Request $req, $id = null)
+    {
+        if (is_null($id)) {
+            $role = new Role();
+        } else {
+            $role = Role::find($id);
+        }
+        $role->name = $req->name;
+        $role->guard_name = "web";
+        $role->save();
+
+        return redirect()->back();
+    }
+
+
+    public function permission(Request $req)
     {
         $list=Role::all();
         $list2=User::all();
