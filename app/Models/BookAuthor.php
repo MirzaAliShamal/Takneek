@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class BookAuthor extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
-    public function coworkings()
+    public function books()
     {
-        return $this->hasMany('App\Models\Coworking');
+        return $this->hasMany('App\Models\Book');
     }
 }

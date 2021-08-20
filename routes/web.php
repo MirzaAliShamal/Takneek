@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/user-role', function () {
-    return view('back.roles.page-userrole');
-});
 
 require __DIR__.'/auth.php';
 
@@ -59,18 +56,44 @@ Route::middleware('auth')->group(function () {
         Route::get('/page', 'CoworkingController@page_coworking')->name('page');
     });
 
-    Route::prefix('extra')->name('extra.')->group(function () {
-
-        Route::post('/save', 'CoworkingExtraController@save')->name('save');
-        Route::get('/delete/{id}', 'CoworkingExtraController@delete')->name('delete');
-    });
-
     Route::prefix('location')->name('location.')->group(function () {
         Route::get('/', 'LocationController@list')->name('list');
         Route::get('/add', 'LocationController@add')->name('add');
         Route::get('/edit/{id?}', 'LocationController@edit')->name('edit');
         Route::post('/save/{id?}', 'LocationController@save')->name('save');
-        Route::get('/delete/{id}', 'LocationController@delete')->name('delete');
+        Route::get('/delete/{id?}', 'LocationController@delete')->name('delete');
+    });
+
+    Route::prefix('book-categories')->name('book.category.')->group(function () {
+        Route::get('/', 'BookCategoryController@list')->name('list');
+        Route::get('/add', 'BookCategoryController@add')->name('add');
+        Route::get('/edit/{id?}', 'BookCategoryController@edit')->name('edit');
+        Route::post('/save/{id?}', 'BookCategoryController@save')->name('save');
+        Route::get('/delete/{id?}', 'BookCategoryController@delete')->name('delete');
+    });
+
+    Route::prefix('book-authors')->name('book.author.')->group(function () {
+        Route::get('/', 'BookAuthorController@list')->name('list');
+        Route::get('/add', 'BookAuthorController@add')->name('add');
+        Route::get('/edit/{id?}', 'BookAuthorController@edit')->name('edit');
+        Route::post('/save/{id?}', 'BookAuthorController@save')->name('save');
+        Route::get('/delete/{id?}', 'BookAuthorController@delete')->name('delete');
+    });
+
+    Route::prefix('books')->name('book.')->group(function () {
+        Route::get('/list', 'BookController@list')->name('list');
+        Route::get('/add', 'BookController@add')->name('add');
+        Route::get('/edit/{id?}', 'BookController@edit')->name('edit');
+        Route::post('/save/{id?}', 'BookController@save')->name('save');
+        Route::get('/delete/{id?}', 'BookController@delete')->name('delete');
+    });
+
+    Route::prefix('equipments')->name('equipment.')->group(function () {
+        Route::get('/list', 'EquipmentController@list')->name('list');
+        Route::get('/add', 'EquipmentController@add')->name('add');
+        Route::get('/edit/{id?}', 'EquipmentController@edit')->name('edit');
+        Route::post('/save/{id?}', 'EquipmentController@save')->name('save');
+        Route::get('/delete/{id?}', 'EquipmentController@delete')->name('delete');
     });
 
 });

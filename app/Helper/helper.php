@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Book;
 
 
 function uploadFile($file, $path){
@@ -14,19 +15,30 @@ function uploadFile($file, $path){
     return $path.'/'.$name;
 }
 
-function roles()
-{
+function bookUUID() {
+    $no = "TK".substr(str_shuffle("A0B1C2D3E4F5G6HI7J8K9L"), 0, 10);
+
+    if (bookUUIDExists($no)) {
+        return bookUUID();
+    } else {
+        return $no;
+    }
+}
+
+function bookUUIDExists($number) {
+    return Book::where('uuid', $number)->exists();
+}
+
+function roles() {
     return Role::all();
 }
 
-function setting()
-{
+function setting() {
     return Setting::pluck('value', 'key')->toArray();
 }
 
 
-function commaSeparatedString($string)
-{
+function commaSeparatedString($string) {
     return explode(',', $string);
 }
 

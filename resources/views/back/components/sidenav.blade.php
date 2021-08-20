@@ -262,11 +262,33 @@
                                 </span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="http://localhost/km/index.php?page=library" class="menu-link">
+                                <a href="{{ route('book.list') }}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
                                     <span class="menu-text">Books</span>
+                                    <span class="menu-label">
+                                        <span class="label label-rounded label-primary">800</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('book.category.list') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Categories</span>
+                                    <span class="menu-label">
+                                        <span class="label label-rounded label-primary">800</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('book.author.list') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Authors</span>
                                     <span class="menu-label">
                                         <span class="label label-rounded label-primary">800</span>
                                     </span>
@@ -336,7 +358,7 @@
                                 </span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="http://localhost/km/index.php?page=gym" class="menu-link">
+                                <a href="{{ route('equipment.list') }}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>

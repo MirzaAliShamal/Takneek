@@ -9,5 +9,10 @@ class CoworkingExtra extends Model
 {
     use HasFactory;
 
-    protected $guarded=[];
+    protected $guarded = [];
+
+    public function coworking()
+    {
+        return $this->belongsTo('App\Models\Coworking');
+    }
 }
