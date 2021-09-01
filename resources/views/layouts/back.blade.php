@@ -109,6 +109,20 @@
             .slider.round:before {
                 border-radius: 50%;
             }
+
+            .tagify__dropdown {
+                z-index: 9999999999;
+            }
+            .tagify {
+                min-height: calc(1.5em + 1.3rem + 2px) !important;
+            }
+            .service-label {
+                padding: 0.3rem 0.5rem;
+                width: 100%;
+                text-align: center;
+                border-radius: 3px;
+                color: #fff;
+            }
         </style>
         @yield('css')
 	</head>
@@ -2100,6 +2114,7 @@
 
                 <!--begin::Wrapper-->
                 <div class="offcanvas-wrapper mb-5 scroll-pull">
+
                 </div>
 
                 <!--end::Wrapper-->
@@ -2109,6 +2124,35 @@
         </div>
 
         <!-- spaces end!-->
+
+        <!-- Customer start!-->
+
+        <div id="customer_panel" class="offcanvas offcanvas-right p-10">
+            <!--begin::Header-->
+            <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
+                <h4 class="font-weight-bold m-0">Multiple Customers</h4>
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="customer_panel_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
+            </div>
+
+            <!--end::Header-->
+
+            <!--begin::Content-->
+            <div class="offcanvas-content">
+
+                <!--begin::Wrapper-->
+                <div class="offcanvas-wrapper mb-5 scroll-pull">
+
+                </div>
+
+                <!--end::Wrapper-->
+
+            </div>
+            <!--end::Content-->
+        </div>
+
+        <!-- Customer end!-->
 
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
@@ -2120,7 +2164,7 @@
 		<script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/custom/education/school/library.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/custom/education/school/students.js') }}"></script>
-		<script src="{{ asset('assets/js/pages/crud/ktdatatable/child/data-ajax.js') }}"></script>
+		{{-- <script src="{{ asset('assets/js/pages/crud/ktdatatable/child/data-ajax.js') }}"></script> --}}
 		<script src="{{ asset('assets/plugins/custom/uppy/uppy.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/crud/file-upload/uppy.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/crud/file-upload/dropzonejs.js') }}"></script>
@@ -2130,6 +2174,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-timepicker.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+        {{-- <script src="{{ asset('assets/js/pages/crud/forms/widgets/tagify.js') }}"></script> --}}
 		<!--end::Page Vendors-->
 
 		<!--begin::Page Scripts(used by this page)-->
@@ -2138,6 +2186,7 @@
 
 
         <script>
+            const base_url = "{{ url('/') }}"
             $(document).on("click", "#modal_toggle", function(e) {
                 e.preventDefault();
                 let elm = $(this);
@@ -2147,9 +2196,14 @@
                     type: "GET",
                     url: action,
                     success: function (response) {
-                        $(".offcanvas-wrapper").html(response);
+                        $("#kt_demo_panel .offcanvas-wrapper").html(response.html);
                         imageUploader();
                         dropify();
+                        datePicker();
+                        timePicker();
+                        if (response.tagify) {
+                            tagify(response.tagify);
+                        }
                         $("#kt_demo_panel").addClass("offcanvas-on");
                     }
                 });
@@ -2165,9 +2219,14 @@
                     type: "GET",
                     url: action,
                     success: function (response) {
-                        $(".offcanvas-wrapper").html(response);
+                        $("#kt_demo_panel .offcanvas-wrapper").html(response.html);
                         imageUploader();
                         dropify();
+                        datePicker();
+                        timePicker();
+                        if (response.tagify) {
+                            tagify(response.tagify);
+                        }
                         $("#kt_demo_panel").addClass("offcanvas-on");
                     }
                 });
@@ -2190,6 +2249,25 @@
                         location.reload(true);
                     }
                 });
+            });
+
+            $(document).on("click", ".check-users-detail", function(e) {
+                e.preventDefault();
+                let elm = $(this);
+                let action = elm.closest('a').attr('href');
+
+                $.ajax({
+                    type: "GET",
+                    url: action,
+                    success: function (response) {
+                        $("#customer_panel .offcanvas-wrapper").html(response);
+
+                        $("#customer_panel").addClass("offcanvas-on");
+                    }
+                });
+            });
+            $(document).on("click", "#customer_panel_close", function(e) {
+                $("#customer_panel").removeClass("offcanvas-on");
             });
 
             function imageUploader() {
@@ -2221,7 +2299,64 @@
             function selectPicker() {
                 $('.managment-picker').selectpicker();
             }
+            function datePicker() {
+                $('.datepicker').datepicker({
+                    rtl: KTUtil.isRTL(),
+                    todayHighlight: true,
+                    orientation: "bottom left",
+                    templates: arrows = {
+                        leftArrow: '<i class="la la-angle-right"><i/>',
+                        rightArrow: '<i class="la la-angle-left"><i/>'
+                    },
+                });
+            }
+            function timePicker() {
+                $('.timepicker').timepicker({
+                    minuteStep: 1,
+                    defaultTime: '',
+                });
+            }
+            function tagify(data) {
+                console.log(data);
+                var toEl = document.getElementById('tagify');
+                var tagifyTo = new Tagify(toEl, {
+                    delimiters: ", ", // add new tags when a comma or a space character is entered
+                    maxTags: 10,
+                    whitelist: data,
+                    templates: {
+                        dropdownItem : function(tagData){
+                            try {
+                                var html = '';
+
+                                html += '<div class="tagify__dropdown__item">';
+                                html += '   <div class="d-flex align-items-center">';
+                                html += '       <span class="symbol sumbol- mr-2">';
+                                html += '           <span class="symbol-label" style="background-image: url(\''+ (tagData.pic ? base_url+'/'+tagData.pic : '') + '\')">' + (tagData.initials ? tagData.initials : '') + '</span>';
+                                html += '       </span>';
+                                html += '       <div class="d-flex flex-column">';
+                                html += '           <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">'+ (tagData.value ? tagData.value : '') + '</a>';
+                                html += '           <span class="text-muted font-weight-bold">Total Quantity: ' + (tagData.qty ? tagData.qty : '') + '</span>';
+                                html += '       </div>';
+                                html += '   </div>';
+                                html += '</div>';
+
+                                return html;
+                            } catch (err) {}
+                        }
+                    },
+                    transformTag: function(tagData) {
+                        tagData.class = 'tagify__tag tagify__tag--primary';
+                    },
+                    dropdown : {
+                        classname : "color-blue",
+                        enabled   : 1,
+                        maxItems  : 5
+                    }
+                });
+            }
+            datePicker();
             selectPicker();
+            tagify();
         </script>
 
 

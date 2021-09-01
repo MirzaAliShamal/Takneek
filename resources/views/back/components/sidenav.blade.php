@@ -60,7 +60,7 @@
                 </li>
 
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="http://localhost/km/index.php?page=booking" class="menu-link menu-toggle">
+                    <a href="{{ route('booking.list') }}" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon svg-icon-primary svg-icon-2x">
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -175,7 +175,18 @@
                                 </span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="{{route('coworking.list')}}" class="menu-link">
+                                <a href="{{ route('extra.list') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Extras</span>
+                                    <span class="menu-label">
+                                        <span class="label label-rounded label-primary">{{\App\Models\Coworking::all()->count()}}</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('coworking.list') }}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
@@ -187,16 +198,16 @@
                             </li>
 
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="{{route('location.list')}}" class="menu-link">
+                                <a href="{{ route('location.list') }}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Add Location</span>
+                                    <span class="menu-text">Locations</span>
 
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="layout/themes/header-dark.html" class="menu-link">
+                                <a href="" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>

@@ -21,8 +21,10 @@ class ManageUserController extends Controller
     public function add()
     {
         $roles = Role::all();
-
-        return response()->json(view('back.user.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.user.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
@@ -30,7 +32,10 @@ class ManageUserController extends Controller
         $roles = Role::all();
         $user = User::find($id);
 
-        return response()->json(view('back.user.edit', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.user.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $req, $id = null)

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coworking;
-use App\Models\CoworkingExtra;
+// use App\Models\CoworkingExtra;
 use App\Models\CoworkingImage;
 use App\Models\Location;
+use App\Models\Extra;
 use Illuminate\Http\Request;
 
 class CoworkingController extends Controller
@@ -20,16 +21,27 @@ class CoworkingController extends Controller
     public function add()
     {
         $locations = Location::all();
+        $extras = Extra::select('id AS id', 'name AS value', 'image As pic','qty AS qty')->orderBy('name', 'ASC')->get()->toArray();
 
-        return response()->json(view('back.coworking.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.coworking.add', get_defined_vars())->render(),
+            'tagify' => $extras,
+        ]);
     }
 
     public function edit($id = null)
     {
         $locations = Location::all();
-        $coworking = Coworking::with('coworking_images', 'coworking_extras')->find($id);
+        $coworking = Coworking::with('coworking_images')->find($id);
+        $extras = Extra::select('id AS id', 'name AS value', 'image As pic','qty AS qty')->orderBy('name', 'ASC')->get()->toArray();
 
-        return response()->json(view('back.coworking.edit', get_defined_vars())->render(), 200);
+        // dd(implode(", ", $coworking->extras()->pluck('name')->toArray()));
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.coworking.edit', get_defined_vars())->render(),
+            'tagify' => $extras,
+        ]);
     }
 
 
@@ -67,21 +79,23 @@ class CoworkingController extends Controller
         $coworking->description = $req->description;
         $coworking->extra_mandatory = $req->extra_mandatory ?? 0;
         $coworking->min_extra = $req->min_extra ?? 0;
+        $coworking->status = "2";
         $coworking->save();
 
 
-        if(count(array_filter($req->extra_name)) > 0) {
-            $coworking->coworking_extras()->delete();
-            $extras = array_filter($req->extra_name);
-            for ($i=1; $i <= count(array_filter($req->extra_name)); $i++) {
-                $extras = CoworkingExtra::create([
-                    'coworking_id' => $coworking->id,
-                    'extra_name' => $req->extra_name[$i],
-                    'extra_price' => $req->extra_price[$i],
-                    'extra_qty' => $req->extra_qty[$i],
-                    'extra_description' => $req->extra_description[$i],
-                ]);
+        if(isset($req->extras)) {
+            $cur_ids = array();
+            foreach($coworking->extras as $e){
+                $cur_ids[] = $e->id;
             }
+            $coworking->extras()->detach($cur_ids);
+
+            $ids = [];
+            foreach (json_decode($req->extras) as $value) {
+                $ids[] = $value->id;
+            }
+            $extras = Extra::find($ids);
+            $coworking->extras()->attach($extras);
         }
 
         if ($req->hasFile('images')) {

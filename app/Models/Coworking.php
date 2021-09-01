@@ -16,13 +16,18 @@ class Coworking extends Model
         return $this->belongsTo('App\Models\Location');
     }
 
-    public function coworking_extras()
+    public function extras()
     {
-        return $this->hasMany('App\Models\CoworkingExtra');
+        return $this->belongsToMany('App\Models\Extra');
     }
 
     public function coworking_images()
     {
         return $this->hasMany('App\Models\CoworkingImage');
+    }
+
+    public function bookings()
+    {
+        return $this->morphMany('App\Models\Booking', 'bookingable');
     }
 }

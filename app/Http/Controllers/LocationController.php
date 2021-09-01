@@ -15,13 +15,20 @@ class LocationController extends Controller
 
     public function add()
     {
-        return response()->json(view('back.location.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.location.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
     {
         $location = Location::find($id);
-        return response()->json(view('back.location.edit', get_defined_vars())->render(), 200);
+
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.location.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $request, $id = null)

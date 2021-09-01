@@ -16,14 +16,20 @@ class EquipmentController extends Controller
 
     public function add()
     {
-        return response()->json(view('back.equipment.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.equipment.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
     {
         $equipment = Equipment::find($id);
 
-        return response()->json(view('back.equipment.edit', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.equipment.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $req, $id = null)

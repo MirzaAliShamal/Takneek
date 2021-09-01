@@ -205,7 +205,7 @@
 
             <hr>
             <h6>Extras</h6>
-            <div class="form-group row extra-mandatory" style="{{ count($coworking->coworking_extras) == 0 ? 'display: none;' : '' }}">
+            <div class="form-group row extra-fields" style="{{ $coworking->extras->count() == 0 ? 'display: none;' : '' }}">
                 <div class="col-lg-12">
                     <p class="text-justify pt-1 mr-auto">
                         Set extra as a mandatory field ?
@@ -241,125 +241,11 @@
                     <button type="button" class="btn btn-primary form-control add-extra">+ Add Extra</button>
                 </div>
             </div>
-
-            <div class="extra-group">
-                <div class="extra-model p-3 mb-5" style="border: 1px solid #e7e7e7; display:none;">
-                    <div class="display-group row" style="display: none;">
-                        <div class="col-lg-6">
-                            <h6>Hi</h6>
-                        </div>
-                        <div class="col-lg-6 text-right">
-                            <span class="edit-extra ml-2"><i class="flaticon2-pen"></i></span>
-                            <span class="remove-extra ml-2"><i class="flaticon2-delete"></i></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <small class="text-muted">Price:</small>
-                            <p class="price">$101</p>
-                        </div>
-                        <div class="col-lg-6">
-                            <small class="text-muted">Maximum Quantity:</small>
-                            <p class="quantity">1</p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-                            <label>Name:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control extra_name"  name="extra_name[]" placeholder="">
-                            </div>
-                            <span class="form-text text-muted">Name:</span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label>Price:</label>
-                            <div class="input-group">
-                                <input type="number" name="extra_price[]" class="form-control extra_price" placeholder="Enter Price" value="0.00" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">
-                                        $
-                                    </span>
-                                </div>
-                            </div>
-                            <span class="form-text text-muted">Price:</span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label>Quantity:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control extra_qty"  name="extra_qty[]" value="1" placeholder="">
-                            </div>
-                            <span class="form-text text-muted">Quantity:</span>
-                        </div>
-                        <div class="col-lg-12">
-                            <label>Description:</label>
-                            <div class="input-group">
-                                <textarea rows="3" id="extra_description" type="number" class="form-control extra_description"  name="extra_description[]" placeholder=""></textarea>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 mt-3">
-                            <button type="button" class="btn btn-default mr-2 cancle-extra">Cancel</button>
-                            <button type="button" class="btn btn-success mr-2 save-extra">Add Extra</button>
-                        </div>
-                    </div>
+            <div class="form-group row extra-fields" style="{{ $coworking->extras->count() == 0 ? 'display: none;' : '' }}">
+                <div class="col-lg-12">
+                    <label>Extras:</label>
+                    <input id="tagify" class="form-control tagify" name='extras' placeholder="Add Extra" value="{{ $coworking->extras->count() > 0 ? implode(", ", $coworking->extras()->pluck('name')->toArray()) : '' }}">
                 </div>
-
-                @foreach ($coworking->coworking_extras as $item)
-                    <div class="extra extra-single p-5 mb-5" style="border: 1px solid #e7e7e7;">
-                        <div class="display-group row">
-                            <div class="col-lg-6">
-                                <h6>{{ $item->extra_name }}</h6>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <span class="edit-extra ml-2"><i class="flaticon2-pen"></i></span>
-                                <span class="remove-extra ml-2"><i class="flaticon2-delete"></i></span>
-                            </div>
-                            <div class="col-lg-6">
-                                <small class="text-muted">Price:</small>
-                                <p class="price">${{ $item->extra_price }}</p>
-                            </div>
-                            <div class="col-lg-6">
-                                <small class="text-muted">Maximum Quantity:</small>
-                                <p class="quantity">{{ $item->extra_qty }}</p>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display: none;">
-                            <div class="col-lg-12">
-                                <label>Name:</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control extra_name" value="{{ $item->extra_name }}" name="extra_name[]" placeholder="">
-                                </div>
-                                <span class="form-text text-muted">Name:</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Price:</label>
-                                <div class="input-group">
-                                    <input type="number" name="extra_price[]" class="form-control extra_price" value="{{ $item->extra_price }}" placeholder="Enter Price" required>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            $
-                                        </span>
-                                    </div>
-                                </div>
-                                <span class="form-text text-muted">Price:</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label>Quantity:</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control extra_qty"  name="extra_qty[]" value="{{ $item->extra_qty }}" placeholder="">
-                                </div>
-                                <span class="form-text text-muted">Quantity:</span>
-                            </div>
-                            <div class="col-lg-12">
-                                <label>Description:</label>
-                                <div class="input-group">
-                                    <textarea rows="3" id="extra_description" type="number" class="form-control extra_description"  name="extra_description[]" placeholder="">{{ $item->extra_description }}</textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 mt-3">
-                                <button type="button" class="btn btn-default mr-2 cancle-extra">Cancel</button>
-                                <button type="button" class="btn btn-success mr-2 save-extra">Add Extra</button>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
             </div>
 
             <div class="card-footer">

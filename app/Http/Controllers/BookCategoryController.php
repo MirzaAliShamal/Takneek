@@ -15,13 +15,20 @@ class BookCategoryController extends Controller
 
     public function add()
     {
-        return response()->json(view('back.book_category.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.book_category.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
     {
         $book_category = BookCategory::find($id);
-        return response()->json(view('back.book_category.edit', get_defined_vars())->render(), 200);
+
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.book_category.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $request, $id = null)

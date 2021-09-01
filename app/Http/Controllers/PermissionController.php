@@ -15,14 +15,20 @@ class PermissionController extends Controller
 
     public function add()
     {
-        return view('back.permission.add', get_defined_vars());
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.permission.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
     {
         $permission = Permission::find($id);
 
-        return view('back.permission.edit', get_defined_vars());
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.permission.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $req, $id = null)

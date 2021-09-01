@@ -5,11 +5,11 @@
     <!--begin::Header-->
     <div class="card-header border-0 py-5">
         <h3 class="card-title align-items-start flex-column">
-            <span class="card-label font-weight-bolder text-dark">All Locations</span>
-            <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($list) }} Equipments	</span>
+            <span class="card-label font-weight-bolder text-dark">All Extras</span>
+            <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($list) }} Extras </span>
         </h3>
         <div class="card-toolbar">
-            <a href="{{ route('location.add') }}" class="btn btn-primary font-weight-bolder font-size-sm" id="modal_toggle">
+            <a href="{{ route('extra.add') }}" class="btn btn-primary font-weight-bolder font-size-sm" id="modal_toggle">
                 <span class="svg-icon svg-icon-md svg-icon-white">
                     <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -21,7 +21,7 @@
                     </svg>
                     <!--end::Svg Icon-->
                 </span>
-                Add New Location
+                Add New Extra
             </a>
         </div>
     </div>
@@ -39,8 +39,9 @@
                                 <span></span>
                             </label>
                         </th>
-                        <th class="px-0 text-left" style="min-width:250px;">Location</th>
-                        <th class="text-info text-left" style="min-width: 100px">Date Created</th>
+                        <th class="text-info text-left" style="min-width: 250px">Extra</th>
+                        <th class="text-info text-left" style="min-width: 100px">Price</th>
+                        <th class="text-info text-left" style="min-width: 100px">Status</th>
                         <th class="pr-0 text-right" style="min-width: 160px">Action</th>
                     </tr>
                 </thead>
@@ -55,13 +56,28 @@
                             </label>
                         </td>
                         <td class="">
-                            <span class="d-block font-size-md">{{ $item->location }}</span>
+                            <span style="width: 250px;"><div class="d-flex align-items-center">
+                                <div class="symbol symbol-40 symbol-sm flex-shrink-0">
+                                    <img class="" src="{{ asset($item->image) }}" alt="photo">
+                                </div>
+                                <div class="ml-4">
+                                    <a href="#" class="text-dark-75 text-hover-primary font-weight-bolder font-size-lg mb-0">{{ $item->name }}</a>
+                                    <div class="text-muted font-weight-bold">Total {{ $item->qty }}</div>
+                                </div>
+                            </span>
                         </td>
                         <td class="">
-                            <span class="d-block font-size-md">{{ $item->created_at->format('d M, Y H:i a') }}</span>
+                            <a href="#" class="text-dark-50 text-hover-primary font-weight-bold">${{ $item->price }}</a>
+                        </td>
+                        <td class="">
+                            @if ($item->status)
+                                <span class="label label-lg font-weight-bold  label-light-primary label-inline">Active</span>
+                            @else
+                                <span class="label label-lg font-weight-bold label-light-info label-inline">Disabled</span>
+                            @endif
                         </td>
                         <td class="text-right pr-0">
-                            <a href="{{ route('location.edit', $item->id) }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3 edit-item" data-toggle="tooltip" data-theme="dark" title="Edit">
+                            <a href="{{ route('extra.edit', $item->id) }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3 edit-item" data-toggle="tooltip" data-theme="dark" title="Edit">
                                 <i class="fa fa-edit text-primary"></i>
                             </a>
                             <a href="#" data-id="{{$item->id}}" class="btn user_delete btn-icon btn-light btn-hover-primary btn-sm" data-toggle="tooltip" data-theme="dark" title="Delete">

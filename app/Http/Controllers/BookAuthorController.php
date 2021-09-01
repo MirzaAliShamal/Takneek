@@ -15,13 +15,20 @@ class BookAuthorController extends Controller
 
     public function add()
     {
-        return response()->json(view('back.book_author.add', get_defined_vars())->render(), 200);
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.book_author.add', get_defined_vars())->render(),
+        ]);
     }
 
     public function edit($id = null)
     {
         $book_author = BookAuthor::find($id);
-        return response()->json(view('back.book_author.edit', get_defined_vars())->render(), 200);
+
+        return response()->json([
+            'statusCode' => 200,
+            'html' => view('back.book_author.edit', get_defined_vars())->render(),
+        ]);
     }
 
     public function save(Request $req, $id = null)
