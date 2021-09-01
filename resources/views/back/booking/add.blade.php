@@ -5,7 +5,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label> Category:</label>
-            <select required class="form-control" id="type" name="type">
+            <select class="form-control" id="type" name="type">
                 <option value="" selected>Nothing Selected</option>
                 <option value="coworking">Co-Working</option>
                 <option value="event">Event</option>
@@ -18,7 +18,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label> Service:</label>
-            <select required class="form-control" id="bookingable" name="bookingable">
+            <select class="form-control" id="bookingable" name="bookingable">
                 <option value="" selected>Nothing Selected</option>
             </select>
             <span class="form-text text-muted">Please select Service</span>
@@ -27,7 +27,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label> Customer:</label>
-            <select required class="form-control" id="user_id" name="user_id">
+            <select class="form-control" id="user_id" name="user_id">
                 <option value="" selected>Nothing Selected</option>
                 @foreach($users as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -49,7 +49,7 @@
     <div class="form-group row anyone-fields" style="display: none">
         <div class="col-lg-12">
             <label> Additional Persons:</label>
-            <select required class="form-control" id="additional_persons" name="additional_persons">
+            <select class="form-control" id="additional_persons" name="additional_persons">
                 <option value="" selected>Nothing Selected</option>
             </select>
             <span class="form-text text-muted">Please select Additional Persons</span>
@@ -115,7 +115,7 @@
     <div class="form-group row recurring-fields" style="display:none;">
         <div class="col-lg-6">
             <label> Recurring Type:</label>
-            <select required class="form-control" id="recurring_type" onchange="manageRecurringIntervals()" name="recurring_type">
+            <select class="form-control" id="recurring_type" onchange="manageRecurringIntervals()" name="recurring_type">
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
@@ -124,7 +124,7 @@
         </div>
         <div class="col-lg-6">
             <label> Recurring Interval:</label>
-            <select required class="form-control" id="recurring_interval" name="recurring_interval">
+            <select class="form-control" id="recurring_interval" name="recurring_interval">
             </select>
             <span class="form-text text-muted">Please select Recrurring Interval</span>
         </div>
@@ -158,7 +158,7 @@
         </div>
         <div class="col-lg-6">
             <label> Payment Method *:</label>
-            <select required class="form-control" id="payment_method" name="payment_method" required>
+            <select class="form-control" id="payment_method" name="payment_method">
                 <option value="" selected>Nothing Selected</option>
                 <option value="razorpay">Razorpay</option>
                 <option value="paytm">Paytm</option>
@@ -169,7 +169,7 @@
 
         <div class="col-lg-6">
             <label> Payment Transaction ID *:</label>
-            <input type="text" class="form-control" name="payment_id" placeholder="Payment Transaction ID" autocomplete="off" required>
+            <input type="text" class="form-control" name="payment_id" placeholder="Payment Transaction ID" autocomplete="off">
             <span class="form-text text-muted">Please select Payment ID</span>
         </div>
     </div>
