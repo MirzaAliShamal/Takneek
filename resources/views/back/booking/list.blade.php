@@ -27,7 +27,7 @@
     </div>
     <!--end::Header-->
     <!--begin::Body-->
-    <div class="card-body py-0">
+    <div class="card-body">
         <div class="mb-7">
             <div class="row align-items-center">
                 <div class="col-lg-9 col-xl-8">
@@ -125,11 +125,10 @@
 			}, {
                 field: 'Date',
                 title: 'Date',
-                sortable: 'asc',
             }, {
                 field: 'Service',
                 title: 'Service',
-                sortable: 'asc',
+                sortable: false,
                 template: function(row) {
                     let html = '';
                     $.each(row.Service, function (indexInArray, valueOfElement) {
@@ -273,30 +272,47 @@
                 {
                     field: 'BookingID',
                     title: 'BookingID',
+                    width: 70,
                 }, {
                     field: 'Time',
 					title: 'Time',
+                    width: 70,
 					template: function(row) {
                         return '<span class="label label-lg label-light-success label-inline">'+row.Time+'</span>';
 					},
                 }, {
 					field: 'Customer',
 					title: 'Customer',
+                    sortable: false,
+                    width: 80,
+                    template: function(row) {
+                        return '<strong><a href=\'{{ route("get.booking.customer") }}?id='+row.BookingID+'\' class="check-users-detail"><i class="flaticon2-user"></i> '+row.Customer+'</a></strong>';
+                    },
 				}, {
 					field: 'Service',
 					title: 'Service',
+                    sortable: false,
+                    width: 50,
 				}, {
 					field: 'Addons',
 					title: 'Addons',
+                    sortable: false,
+                    width: 55,
 				}, {
 					field: 'Seats',
 					title: 'Seats',
+                    sortable: false,
+                    width: 50,
 				}, {
 					field: 'Amount',
 					title: 'Amount',
+                    sortable: false,
+                    width: 55,
 				}, {
 					field: 'PaymentMethod',
 					title: 'Payment Method',
+                    sortable: false,
+                    width: 120,
 				},
             ],
         });

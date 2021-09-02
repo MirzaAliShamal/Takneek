@@ -2186,6 +2186,7 @@
 
 
         <script>
+            var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
             const base_url = "{{ url('/') }}"
             $(document).on("click", "#modal_toggle", function(e) {
                 e.preventDefault();
@@ -2254,7 +2255,7 @@
             $(document).on("click", ".check-users-detail", function(e) {
                 e.preventDefault();
                 let elm = $(this);
-                let action = elm.closest('a').attr('href');
+                let action = elm.attr('href');
 
                 $.ajax({
                     type: "GET",

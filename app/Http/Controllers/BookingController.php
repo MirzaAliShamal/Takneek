@@ -8,6 +8,7 @@ use App\Models\Coworking;
 use App\Models\Booking;
 use App\Models\Extra;
 use App\Models\User;
+use Str;
 use DB;
 
 class BookingController extends Controller
@@ -26,12 +27,55 @@ class BookingController extends Controller
     public function get(Request $req)
     {
         if ($req->ajax()) {
-            $list = Booking::select('date', DB::raw('count(*) as total_booking'), DB::raw('sum(total_price) as total_price'))->groupBy('date')->get();
+            // Define the page and number of items per page
+            $page = 1;
+            $per_page = 10;
+
+            // Define the default order
+            $order_field = 'date';
+            $order_sort = 'asc';
+
+            // Get the request parameters
+            $params = $req->all();
+            $query = Booking::select('date', DB::raw('count(*) as total_booking'), DB::raw('sum(total_price) as total_price'))->groupBy('date');
+
+            // Set the current page
+            if(isset($params['pagination']['page'])) {
+                $page = $params['pagination']['page'];
+            }
+
+            // Set the number of items
+            if(isset($params['pagination']['perpage'])) {
+                $per_page = $params['pagination']['perpage'];
+            }
+
+            // Set the search filter
+            if(isset($params['query']['generalSearch'])) {
+                $query->where('name', 'LIKE', "%" . $params['query']['generalSearch'] . "%")
+                ->orWhere('file', 'LIKE', "%" . $params['query']['generalSearch'] . "%");
+            }
+
+            // Set the status filter
+            if(isset($params['query']['Status'])) {
+                $query->where('status', $params['query']['Status']);
+            }
+
+            // Set the sort order and field
+            if(isset($params['sort']['field'])) {
+                $order_field = $params['sort']['field'];
+                $order_sort = $params['sort']['sort'];
+            }
+
+            // Get how many items there should be
+            $total = $query->limit($per_page)->count();
+
+            // Get the items defined by the parameters
+            $results = $query->skip(($page - 1) * $per_page)->take($per_page)->orderBy($order_field, $order_sort)->get();
 
 
             $res = [];
 
-            foreach ($list as $key => $value) {
+            foreach ($results as $key => $value) {
                 $serv = [];
                 $service_q = Booking::where('date', $value->date)->get();
                 foreach ($service_q as $k => $v) {
@@ -43,32 +87,95 @@ class BookingController extends Controller
                     'Date' => $value->date,
                     'Service' => array_unique($serv),
                     'TotalBookings' => $value->total_booking,
-                    'TotalAmount' => "$".$value->total_price,
+                    'TotalAmount' => "$".number_format($value->total_price),
                 );
             }
-            return response()->json($res, 200);
+
+            $data = [
+                'meta' => [
+                    "page" => $page,
+                    "pages" => ceil($total / $per_page),
+                    "perpage" => $per_page,
+                    "total" => $total,
+                    "sort" => $order_sort,
+                    "field" => $order_field
+                ],
+
+                'data' => $res
+            ];
+            return response()->json($data, 200);
         }
     }
 
     function getByDate(Request $req)
     {
         if ($req->ajax()) {
-            $list = Booking::where('date', $req['query']['Date'])->orderBy('time','desc')->get();
+            $page = 1;
+            $per_page = 10;
+
+            // Define the default order
+            $order_field = 'time';
+            $order_sort = 'desc';
+
+            // Get the request parameters
+            $params = $req->all();
+            $query = Booking::where('date', $params['query']['Date']);
+
+            // Set the current page
+            if(isset($params['pagination']['page'])) {
+                $page = $params['pagination']['page'];
+            }
+
+            // Set the number of items
+            if(isset($params['pagination']['perpage'])) {
+                $per_page = $params['pagination']['perpage'];
+            }
+
+            // Set the search filter
+            if(isset($params['query']['generalSearch'])) {
+                $query->where('name', 'LIKE', "%" . $params['query']['generalSearch'] . "%")
+                ->orWhere('file', 'LIKE', "%" . $params['query']['generalSearch'] . "%");
+            }
+
+            // Set the status filter
+            if(isset($params['query']['Status'])) {
+                $query->where('status', $params['query']['Status']);
+            }
+
+            // Get how many items there should be
+            $total = $query->limit($per_page)->count();
+
+            // Get the items defined by the parameters
+            $results = $query->skip(($page - 1) * $per_page)->take($per_page)->orderBy($order_field, $order_sort)->get();
+
 
             $res = [];
-            foreach ($list as $key => $value) {
-                $res['data'][] = array(
+            foreach ($results as $key => $value) {
+                $res[] = array(
                     'BookingID' => $value->id,
                     'Time' => $value->time,
-                    'Customer' => "Ali",
+                    'Customer' => Str::limit(implode(", " , $value->users->pluck('name')->toArray()), 10, '...'),
                     'Service' => $value->bookingable->name,
-                    'Addons' => '2',
+                    'Addons' => $value->booking_extras()->count(),
                     'Seats' => '3',
-                    'Amount' => $value->total_price,
+                    'Amount' => "$".number_format($value->total_price),
                     'PaymentMethod' => 'Paytm',
                 );
             }
-            return response()->json($res, 200);
+
+            $data = [
+                'meta' => [
+                    "page" => $page,
+                    "pages" => ceil($total / $per_page),
+                    "perpage" => $per_page,
+                    "total" => $total,
+                    "sort" => $order_sort,
+                    "field" => $order_field
+                ],
+
+                'data' => $res
+            ];
+            return response()->json($data, 200);
         }
     }
 
