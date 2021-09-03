@@ -224,7 +224,10 @@ class BookingController extends Controller
                 $extra_person->name = $req->additional_person_name[$i];
                 $extra_person->email = $req->additional_person_email[$i];
                 $extra_person->password = bcrypt('12345678');
+                $extra_person->profile_picture = "default.png";
                 $extra_person->save();
+
+                $extra_person->assignRole('Visitor');
 
                 $ids[] = $extra_person->id;
             }

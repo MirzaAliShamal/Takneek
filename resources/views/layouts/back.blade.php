@@ -2187,7 +2187,7 @@
 
         <script>
             var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-            const base_url = "{{ url('/') }}"
+            const base_url = "{{ url('/') }}";
             $(document).on("click", "#modal_toggle", function(e) {
                 e.preventDefault();
                 let elm = $(this);
@@ -2269,6 +2269,25 @@
             });
             $(document).on("click", "#customer_panel_close", function(e) {
                 $("#customer_panel").removeClass("offcanvas-on");
+            });
+
+
+            $(document).on("click", ".delete-item", function(e) {
+                e.preventDefault();
+                let elm = $(this);
+                let action = $(this).attr('href');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!"
+                }).then(function(result) {
+                    if (result.value) {
+                        location.href = action;
+                    }
+                });
             });
 
             function imageUploader() {
@@ -2355,58 +2374,11 @@
                     }
                 });
             }
+
+
             datePicker();
             selectPicker();
             tagify();
-        </script>
-
-
-        <script>
-            var Password = {
-
-                _pattern : /[a-zA-Z0-9_\-\+\.]/,
-
-
-                _getRandomByte : function()
-                {
-                    // http://caniuse.com/#feat=getrandomvalues
-                    if(window.crypto && window.crypto.getRandomValues)
-                    {
-                        var result = new Uint8Array(1);
-                        window.crypto.getRandomValues(result);
-                        return result[0];
-                    }
-                    else if(window.msCrypto && window.msCrypto.getRandomValues)
-                    {
-                        var result = new Uint8Array(1);
-                        window.msCrypto.getRandomValues(result);
-                        return result[0];
-                    }
-                    else
-                    {
-                        return Math.floor(Math.random() * 256);
-                    }
-                },
-
-                generate : function(length)
-                {
-                    return Array.apply(null, {'length': length})
-                        .map(function()
-                        {
-                            var result;
-                            while(true)
-                            {
-                                result = String.fromCharCode(this._getRandomByte());
-                                if(this._pattern.test(result))
-                                {
-                                    return result;
-                                }
-                            }
-                        }, this)
-                        .join('');
-                }
-
-            };
         </script>
     @yield('js')
     </body>

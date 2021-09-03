@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/manage-permission', 'DashboardController@managePermission')->name('manage.permission');
 
     Route::prefix('users')->name('user.')->group(function () {
-        Route::get('/', 'ManageUserController@list')->name('list');
+        Route::get('/list', 'ManageUserController@list')->name('list');
         Route::get('/add', 'ManageUserController@add')->name('add');
         Route::get('/edit/{id?}', 'ManageUserController@edit')->name('edit');
         Route::post('/save/{id?}', 'ManageUserController@save')->name('save');
@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/add', 'RoleController@add')->name('add');
         Route::get('/edit/{id?}', 'RoleController@edit')->name('edit');
         Route::post('/save/{id?}', 'RoleController@save')->name('save');
+        Route::get('/delete/{id?}', 'RoleController@delete')->name('delete');
     });
 
     Route::prefix('permissions')->name('permission.')->group(function () {
