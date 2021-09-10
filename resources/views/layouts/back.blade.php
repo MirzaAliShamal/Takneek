@@ -123,6 +123,59 @@
                 border-radius: 3px;
                 color: #fff;
             }
+
+            .managment-picker .dropdown-menu {
+                min-width: 250px;
+            }
+
+            .week-boxes {
+                display: inline-block;
+                height: calc(1.5em + 0.8rem + 2px);
+                border: 1px solid #E4E6EF;
+                border-radius: 0.42rem;
+                background-color: #fff;
+            }
+            .week-boxes label {
+                display: inline-block;
+                margin: 0px;
+                margin-left: -3px;
+                padding: 5px;
+                border-right: 1px solid #E4E6EF;
+                height: calc(1.5em + 0.8rem + 1px);
+                font-size: 13px;
+                width: 50px;
+                text-align: center;
+                cursor: pointer;
+                transition: 0.3s all ease-in-out;
+            }
+            .week-boxes input:checked ~ label {
+                background-color: #3699FF;
+                color: #fff;
+                width: 50px;
+                transition: 0.3s all ease-in-out;
+            }
+            .week-boxes label:hover {
+                background-color: #3699FF;
+                color: #fff;
+                width: 50px;
+                transition: 0.3s all ease-in-out;
+            }
+            .week-boxes span:first-child label {
+                margin: 0px;
+            }
+            .week-boxes span:first-child label:hover,
+            .week-boxes span:first-child input:checked ~ label {
+                border-top-left-radius: 0.42rem;
+                border-bottom-left-radius: 0.42rem;
+            }
+            .week-boxes span:last-child label:hover,
+            .week-boxes span:last-child input:checked ~ label {
+                border-top-right-radius: 0.42rem;
+                border-bottom-right-radius: 0.42rem;
+            }
+            .week-boxes span:last-child label {
+                border: 0px;
+            }
         </style>
         @yield('css')
 	</head>

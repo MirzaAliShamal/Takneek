@@ -6,7 +6,7 @@
     <div class="card-header border-0 py-5">
         <h3 class="card-title align-items-start flex-column">
             <span class="card-label font-weight-bolder text-dark">All Spaces</span>
-            <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ count($list) }} Spaces	</span>
+            <span class="text-muted mt-3 font-weight-bold font-size-sm">Total {{ $count }} Spaces	</span>
         </h3>
         <div class="card-toolbar">
             <a href="{{ route('coworking.add') }}" class="btn btn-primary font-weight-bolder font-size-sm" id="modal_toggle">
@@ -27,93 +27,64 @@
     </div>
     <!--end::Header-->
     <!--begin::Body-->
-    <div class="card-body py-0">
-        <!--begin::Table-->
-        <div class="table-responsive">
-            <table class="table table-head-custom table-vertical-center table-head-bg table-borderless" id="kt_advance_table_widget_3">
-                <thead>
-                <tr class="text-uppercase">
-                    <th class="pl-0" style="width: 20px">
-                        <label class="checkbox checkbox-lg checkbox-inline mr-2">
-                            <input type="checkbox" value="1" />
-                            <span></span>
-                        </label>
-                    </th>
-                    <th class="px-0" style="width: 50px">Space</th>
-                    <th style="min-width: 120px"></th>
-                    <th style="min-width: 50px">Location</th>
-                    <th style="min-width: 50px">Price</th>
-                    <th style="min-width: 50px">Status</th>
-                    <th class="pr-1 text-right">action</th>
-                </tr>
-                </thead>
-                <tbody>
-                    @foreach($list as $item)
-                        <tr>
-                            <td class="pl-0 py-7">
-                                <label class="checkbox checkbox-lg checkbox-inline">
-                                    <input type="checkbox" value="1" />
-                                    <span></span>
-                                </label>
-                            </td>
-                            <td>
-                                <div class="symbol symbol-50  mt-1">
-                                    <span class="symbol-label">
-                                        <img src="{{ asset($item->coworking_images[0]->path ?? '') }}" class="h-75 align-self-end" alt="">
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $item->name }}</a>
-                                <span class="text-muted font-weight-bold text-muted d-block font-size-sm">Total {{ $item->max_seats }} Seats</span>
-                            </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $item->location->location }}</span>
-                            </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${{ $item->price }}</span>
-                            </td>
-                            <td>
-                                @if ($item->status)
-                                    <span class="label label-lg label-light-success label-inline">Active</span>
-                                @else
-                                    <span class="label label-lg label-light-danger label-inline">Disabled</span>
-                                @endif
-                            </td>
-                            <td class="text-right pr-0">
-                                <a href="{{ route('coworking.edit', $item->id) }}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3 edit-item" data-toggle="tooltip" data-theme="dark" title="Edit">
-                                    <span class="svg-icon svg-icon-md svg-icon-primary">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M12.2674799,18.2323597 L12.0084872,5.45852451 C12.0004303,5.06114792 12.1504154,4.6768183 12.4255037,4.38993949 L15.0030167,1.70195304 L17.5910752,4.40093695 C17.8599071,4.6812911 18.0095067,5.05499603 18.0083938,5.44341307 L17.9718262,18.2062508 C17.9694575,19.0329966 17.2985816,19.701953 16.4718324,19.701953 L13.7671717,19.701953 C12.9505952,19.701953 12.2840328,19.0487684 12.2674799,18.2323597 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.701953, 10.701953) rotate(-135.000000) translate(-14.701953, -10.701953)" />
-                                                <path d="M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </a>
-                                <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm" data-toggle="tooltip" data-theme="dark" title="Delete">
-                                    <span class="svg-icon svg-icon-md svg-icon-primary">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/Trash.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero" />
-                                                <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
+    <div class="card-body">
 
-                </tbody>
-            </table>
+        <div class="mb-7">
+            <div class="row align-items-center">
+                <div class="col-lg-9 col-xl-8">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 my-2 my-md-0">
+                            <div class="input-icon">
+                                <input type="text" class="form-control" placeholder="Search..." id="list_table_search_query_2" />
+                                <span>
+                                    <i class="flaticon2-search-1 text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
+                    <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                </div>
+            </div>
         </div>
+        <!--end::Search Form-->
+        <!--end: Search Form-->
+        <!--begin: Selected Rows Group Action Form-->
+        <div class="mt-10 mb-5 collapse" id="list_table_group_action_form_2">
+            <div class="d-flex align-items-center">
+                <div class="font-weight-bold text-danger mr-3">Selected
+                <span id="list_table_selected_records_2">0</span>records:</div>
+                <div class="dropdown mr-2">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">Update status</button>
+                    <div class="dropdown-menu dropdown-menu-sm">
+                        <ul class="nav nav-hover flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <span class="nav-text">Pending</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <span class="nav-text">Delivered</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <span class="nav-text">Canceled</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-danger mr-2" type="button" id="kt_datatable_delete_all_2">Delete All</button>
+                <button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#kt_datatable_fetch_modal_2">Fetch Selected Records</button>
+            </div>
+        </div>
+        <!--end: Selected Rows Group Action Form-->
+        <!--begin: Datatable-->
+        <div class="datatable datatable-bordered datatable-head-custom" id="list_table"></div>
+        <!--end: Datatable-->
         <!--end::Table-->
     </div>
     <!--end::Body-->
@@ -172,6 +143,144 @@
         e.preventDefault();
         $(".extra-fields").show();
         // draggable();
+    });
+</script>
+
+<script>
+    var options = {
+        // datasource definition
+        data: {
+            type: 'remote',
+            source: {
+                read: {
+                    url: '{{ route("coworking.list") }}',
+                    method: 'GET',
+                },
+            },
+            pageSize: 10,
+            serverPaging: true,
+            serverFiltering: true,
+            serverSorting: true,
+        },
+
+        // layout definition
+        layout: {
+            scroll: false, // enable/disable datatable scroll both horizontal and
+            footer: false // display/hide footer
+        },
+
+        // column sorting
+        sortable: true,
+
+        pagination: true,
+        search: {
+            input: $('#list_table_search_query_2'),
+            key: 'generalSearch'
+        },
+        extensions: {
+            // boolean or object (extension options)
+            checkbox: true,
+        },
+
+        // columns definition
+        columns: [{
+            field: 'id',
+            title: '#',
+            sortable: false,
+            width: 20,
+            selector: true,
+            textAlign: 'center',
+        }, {
+            field: 'name',
+            title: 'Space',
+            template: function(row) {
+                return ''+
+                    '<div class="d-flex align-items-center">'+
+                        '<div class="symbol symbol-40 symbol-sm flex-shrink-0">'+
+                            '<img class="" src="'+base_url+'/'+row.coworking_images[0].path+'" alt="photo">'+
+                        '</div>'+
+                        '<div class="ml-4">'+
+                            '<a href="#" class="text-dark-75 text-hover-primary font-weight-bolder font-size-lg mb-0">'+row.name+'</a>'+
+                            '<div class="text-muted font-weight-bold">Total '+row.max_seats+' Seats</div>'+
+                        '</div>'+
+                    '</div>';
+
+            }
+        }, {
+            field: 'location',
+            title: 'Location',
+            template: function(row) {
+                return row.location.location;
+            }
+        }, {
+            field: 'price',
+            title: 'Price',
+            template: function(row) {
+                return '$'+row.price;
+            }
+        }, {
+            field: 'status',
+            title: 'Status',
+            // callback function support for column rendering
+            template: function(row) {
+                var status = {
+                    1: {'title': 'Available', 'class': 'label-light-primary'},
+                    0: {'title': 'No Stock', 'class': ' label-light-danger'},
+                };
+                return '<span class="label label-lg font-weight-bold' + status[row.status].class + ' label-inline">' + status[row.status].title + '</span>';
+            },
+        }, {
+            field: 'Actions',
+            title: 'Actions',
+            sortable: false,
+            width: 125,
+            overflow: 'visible',
+            textAlign: 'left',
+            autoHide: false,
+            template: function(row) {
+                return ''+
+                    '<a href="'+base_url+'/coworking/edit/'+row.id+'" class="btn btn-sm btn-clean btn-icon mr-2 edit-item" title="Edit details">'+
+                        '<span class="svg-icon svg-icon-md">'+
+                            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">'+
+                                '<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">'+
+                                    '<rect x="0" y="0" width="24" height="24"/>'+
+                                    '<path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>'+
+                                    '<rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>'+
+                                '</g>'+
+                            '</svg>'+
+                        '</span>'+
+                    '</a>'+
+                    '<a href="'+base_url+'/coworking/delete/'+row.id+'" class="btn btn-sm btn-clean btn-icon delete-item" title="Delete">'+
+                        '<span class="svg-icon svg-icon-md">'+
+                            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">'+
+                                '<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">'+
+                                    '<rect x="0" y="0" width="24" height="24"/>'+
+                                    '<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>'+
+                                    '<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>'+
+                                '</g>'+
+                            '</svg>'+
+                        '</span>'+
+                    '</a>'+
+                '';
+            },
+        }],
+    };
+    var list_table = $('#list_table').KTDatatable(options);
+
+    $('#list_table_search_status_2, #list_table_search_type_2').selectpicker();
+
+    list_table.on('datatable-on-click-checkbox', function(e) {
+        // datatable.checkbox() access to extension methods
+        var ids = list_table.checkbox().getSelectedId();
+        var count = ids.length;
+
+        $('#list_table_selected_records_2').html(count);
+
+        if (count > 0) {
+            $('#list_table_group_action_form_2').collapse('show');
+        } else {
+            $('#list_table_group_action_form_2').collapse('hide');
+        }
     });
 </script>
 @endsection

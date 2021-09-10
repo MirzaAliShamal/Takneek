@@ -1,3 +1,4 @@
+<h3>Extras:</h3>
 @foreach ($list as $item)
     <div class="row mb-2">
         <div class="col-1 m-auto">

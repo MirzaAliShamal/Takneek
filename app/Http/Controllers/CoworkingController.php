@@ -11,11 +11,60 @@ use Illuminate\Http\Request;
 
 class CoworkingController extends Controller
 {
-    public function list()
+    public function list(Request $req)
     {
-        $list = Coworking::orderBY('id','desc')->get();
+        if ($req->ajax()) {
+            $page = 1;
+            $per_page = 10;
 
-        return view('back.coworking.list',get_defined_vars());
+            // Define the default order
+            $order_field = 'id';
+            $order_sort = 'desc';
+
+            // Get the request parameters
+            $params = $req->all();
+            $query = Coworking::with('coworking_images', 'location');
+
+            // Set the current page
+            if(isset($params['pagination']['page'])) {
+                $page = $params['pagination']['page'];
+            }
+
+            // Set the number of items
+            if(isset($params['pagination']['perpage'])) {
+                $per_page = $params['pagination']['perpage'];
+            }
+
+            // Set the search filter
+            if(isset($params['query']['generalSearch'])) {
+                $query->where('name', 'LIKE', "%" . $params['query']['generalSearch'] . "%")
+                ->orWhere('file', 'LIKE', "%" . $params['query']['generalSearch'] . "%");
+            }
+
+            // Get how many items there should be
+            $total = $query->limit($per_page)->count();
+
+            // Get the items defined by the parameters
+            $results = $query->skip(($page - 1) * $per_page)->take($per_page)->orderBy($order_field, $order_sort)->get();
+
+            $data = [
+                'meta' => [
+                    "page" => $page,
+                    "pages" => ceil($total / $per_page),
+                    "perpage" => $per_page,
+                    "total" => $total,
+                    "sort" => $order_sort,
+                    "field" => $order_field
+                ],
+
+                'data' => $results
+            ];
+            return response()->json($data, 200);
+        } else {
+
+            $count = Coworking::count();
+            return view('back.coworking.list', get_defined_vars());
+        }
     }
 
     public function add()
@@ -79,7 +128,7 @@ class CoworkingController extends Controller
         $coworking->description = $req->description;
         $coworking->extra_mandatory = $req->extra_mandatory ?? 0;
         $coworking->min_extra = $req->min_extra ?? 0;
-        $coworking->status = "2";
+        $coworking->status = 1;
         $coworking->save();
 
 

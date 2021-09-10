@@ -140,12 +140,16 @@
                 field: 'name',
                 title: 'Name',
                 template: function(row) {
-                    return '<div class="d-flex"><div class="symbol symbol-50 symbol-light mt-1">'+
-                                '<span class="symbol-label">'+
-                                    '<img src="'+base_url+'/'+row.profile_picture+'" class="img-fluid" width="60px" alt="" />'+
-                                '</span>'+
+                    return ''+
+                        '<div class="d-flex align-items-center">'+
+                            '<div class="symbol symbol-40 symbol-sm flex-shrink-0">'+
+                                '<img class="" src="'+base_url+'/'+row.profile_picture+'" alt="photo">'+
                             '</div>'+
-                            '<h5 class="mb-0 ml-2 align-items-center font-weight-bolder" style="display: inherit;">'+row.name+'</h5></div>';
+                            '<div class="ml-4">'+
+                                '<a href="#" class="text-dark-75 text-hover-primary font-weight-bolder font-size-lg mb-0">'+row.name+'</a>'+
+                            '</div>'+
+                        '</div>';
+
                 }
             }, {
                 field: 'email',

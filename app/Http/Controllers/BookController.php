@@ -9,13 +9,60 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
-    public function list()
+    public function list(Request $req)
     {
-        $list = Book::all();
-        $book_authors = BookAuthor::all();
-        $book_categories = BookCategory::all();
+        if ($req->ajax()) {
+            $page = 1;
+            $per_page = 10;
 
-        return view('back.book.list',get_defined_vars());
+            // Define the default order
+            $order_field = 'name';
+            $order_sort = 'asc';
+
+            // Get the request parameters
+            $params = $req->all();
+            $query = Book::with('book_category', 'book_author');
+
+            // Set the current page
+            if(isset($params['pagination']['page'])) {
+                $page = $params['pagination']['page'];
+            }
+
+            // Set the number of items
+            if(isset($params['pagination']['perpage'])) {
+                $per_page = $params['pagination']['perpage'];
+            }
+
+            // Set the search filter
+            if(isset($params['query']['generalSearch'])) {
+                $query->where('name', 'LIKE', "%" . $params['query']['generalSearch'] . "%")
+                ->orWhere('file', 'LIKE', "%" . $params['query']['generalSearch'] . "%");
+            }
+
+            // Get how many items there should be
+            $total = $query->limit($per_page)->count();
+
+            // Get the items defined by the parameters
+            $results = $query->skip(($page - 1) * $per_page)->take($per_page)->orderBy($order_field, $order_sort)->get();
+
+            $data = [
+                'meta' => [
+                    "page" => $page,
+                    "pages" => ceil($total / $per_page),
+                    "perpage" => $per_page,
+                    "total" => $total,
+                    "sort" => $order_sort,
+                    "field" => $order_field
+                ],
+
+                'data' => $results
+            ];
+            return response()->json($data, 200);
+        } else {
+
+            $count = Book::count();
+            return view('back.book.list', get_defined_vars());
+        }
     }
 
     public function add()

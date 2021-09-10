@@ -9,6 +9,22 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Permissions:</label>
+        </div>
+        @foreach ($permissions as $item)
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" name="permissions[]" id="permission_{{ $item->id }}" value="{{ $item->name }}" {{ in_array($item->name, $assigned) ? 'checked' : '' }}>
+                        <span></span>{{ $item->name }}
+                    </label>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
     <div class="offcanvas-footer">
         <div class="text-center">
             <button type="submit" class="btn btn-primary text-weight-bold btn-block">Update Role</button>

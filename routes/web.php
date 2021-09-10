@@ -29,6 +29,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('/manage-permission', 'DashboardController@managePermission')->name('manage.permission');
 
+    Route::prefix('bookings')->name('booking.')->group(function () {
+        Route::get('/list', 'BookingController@list')->name('list');
+        Route::post('/get', 'BookingController@get')->name('get');
+        Route::post('/get-by-date', 'BookingController@getByDate')->name('get.by.date');
+        Route::get('/add', 'BookingController@add')->name('add');
+        Route::get('/edit/{id?}', 'BookingController@edit')->name('edit');
+        Route::post('/save/{id?}', 'BookingController@save')->name('save');
+        Route::get('/delete/{id?}', 'BookingController@delete')->name('delete');
+    });
+
+    Route::prefix('events')->name('event.')->group(function () {
+        Route::get('/list', 'EventController@list')->name('list');
+        Route::get('/add', 'EventController@add')->name('add');
+        Route::get('/edit/{id?}', 'EventController@edit')->name('edit');
+        Route::post('/save/{id?}', 'EventController@save')->name('save');
+        Route::get('/delete/{id?}', 'EventController@delete')->name('delete');
+    });
+
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/list', 'ManageUserController@list')->name('list');
         Route::get('/add', 'ManageUserController@add')->name('add');
@@ -66,16 +84,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id?}', 'CoworkingController@edit')->name('edit');
         Route::post('/save/{id?}', 'CoworkingController@save')->name('save');
         Route::get('/page', 'CoworkingController@page_coworking')->name('page');
-    });
-
-    Route::prefix('bookings')->name('booking.')->group(function () {
-        Route::get('/list', 'BookingController@list')->name('list');
-        Route::post('/get', 'BookingController@get')->name('get');
-        Route::post('/get-by-date', 'BookingController@getByDate')->name('get.by.date');
-        Route::get('/add', 'BookingController@add')->name('add');
-        Route::get('/edit/{id?}', 'BookingController@edit')->name('edit');
-        Route::post('/save/{id?}', 'BookingController@save')->name('save');
-        Route::get('/delete/{id?}', 'BookingController@delete')->name('delete');
     });
 
     Route::prefix('location')->name('location.')->group(function () {

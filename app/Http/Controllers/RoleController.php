@@ -67,6 +67,8 @@ class RoleController extends Controller
 
     public function add()
     {
+        $permissions = Permission::all();
+
         return response()->json([
             'statusCode' => 200,
             'html' => view('back.role.add', get_defined_vars())->render(),
@@ -76,6 +78,8 @@ class RoleController extends Controller
     public function edit($id = null)
     {
         $role = Role::find($id);
+        $permissions = Permission::all();
+        $assigned = $role->permissions->pluck('name')->toArray();
 
         return response()->json([
             'statusCode' => 200,
@@ -93,6 +97,13 @@ class RoleController extends Controller
         $role->name = $req->name;
         $role->guard_name = "web";
         $role->save();
+
+        $role->permissions()->detach();
+        if (isset($req->permissions)) {
+            foreach ($req->permissions as $item) {
+                $role->givePermissionTo($item);
+            }
+        }
 
         return redirect()->back();
     }
