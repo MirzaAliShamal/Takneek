@@ -30,4 +30,9 @@ class Booking extends Model
     {
         return $this->hasMany("App\Models\BookingExtra");
     }
+
+    public function booking_appointments()
+    {
+        return $this->hasMany("App\Models\BookingAppointment");
+    }
 }

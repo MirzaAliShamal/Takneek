@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingAppointment;
 use Illuminate\Http\Request;
 use App\Models\BookingExtra;
 use App\Models\Coworking;
@@ -190,7 +191,7 @@ class BookingController extends Controller
 
     public function save(Request $req, $id = null)
     {
-
+        // dd($req);
         $booking = new Booking();
         $booking->bookingable_type = "App\Models\Coworking";
         $booking->bookingable_id = $req->bookingable;
@@ -200,13 +201,29 @@ class BookingController extends Controller
         $booking->recurring_booking = $req->recurring_booking == 'on' ? 1 : 0;
         $booking->recurring_type = $req->recurring_type;
         $booking->recurring_interval = $req->recurring_interval;
+        if (!is_null($req->monthly_dropdown)) {
+            $booking->monthly_dropdown = $req->monthly_dropdown;
+        }
+        if ($req->recurring_type == "weekly") {
+            $booking->week_days = json_encode($req->week_days);
+        }
         $booking->recurring_until = $req->recurring_until;
+        $booking->times = $req->times;
         $booking->service_price = $req->service_price;
         $booking->extra_price = $req->extra_price;
         $booking->total_price = $req->total_price;
         $booking->save();
 
         if ($booking) {
+            $booking->booking_appointments()->delete();
+            for ($i=0; $i < $req->times ; $i++) {
+                $appointment = new BookingAppointment();
+                $appointment->booking_id = $booking->id;
+                $appointment->date = $req->recurring_appointments_date[$i];
+                $appointment->time = $req->recurring_appointments_time[$i];
+                $appointment->save();
+            }
+
             $booking->booking_extras()->delete();
             for ($i=0; $i < count($req->extra_id) ; $i++) {
                 $extra = new BookingExtra();

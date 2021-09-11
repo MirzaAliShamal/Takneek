@@ -84,6 +84,8 @@
 
 @section('js')
 <script>
+    let weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let weekAppDate = [];
     let checkbox_len = 1;
     let datatable = $("#kt_datatable").KTDatatable({
         data: {
@@ -484,6 +486,9 @@
             if (recurring_type == "weekly") {
                 manageWeeklyRecurringAppointments("minus");
             }
+            if (recurring_type == "monthly") {
+                manageMonthlyRecurringAppointments("minus");
+            }
         }
 
         if (type == "plus" && val >= 1) {
@@ -494,6 +499,9 @@
             }
             if (recurring_type == "weekly") {
                 manageWeeklyRecurringAppointments("plus");
+            }
+            if (recurring_type == "monthly") {
+                manageMonthlyRecurringAppointments("plus");
             }
         }
     });
@@ -520,7 +528,12 @@
     $(document).on('change', '.week-days', function(e) {
         let type = $("[name='recurring_type']").val();
         let interval = $("[name='recurring_interval']").val();
-        let times = $("[name='times']").val();
+        addIntervalInAppend(interval, type);
+    });
+
+    $(document).on('change', '.monthly-dropdown', function(e) {
+        let type = $("[name='recurring_type']").val();
+        let interval = $("[name='recurring_interval']").val();
         addIntervalInAppend(interval, type);
     });
 
@@ -581,6 +594,7 @@
             }
             // let until = getdate(schedlue_date, 1);
             manageWeeklyFields(type);
+            manageMonthlyFields(type);
             $("[name='recurring_until']").datepicker("setDate", schedlue_date);
             $("[name='recurring_interval']").html(html);
             if ($(".recurring-appointments-append .ra").length == 0) {
@@ -602,6 +616,7 @@
             }
 
             manageWeeklyFields(type);
+            manageMonthlyFields(type);
             $("[name='recurring_until']").datepicker("setDate", schedlue_date);
             $("[name='recurring_interval']").html(html);
             if ($(".recurring-appointments-append .ra").length == 0) {
@@ -621,7 +636,17 @@
                 }
             }
 
+            manageWeeklyFields(type);
+            manageMonthlyFields(type);
+            $("[name='recurring_until']").datepicker("setDate", schedlue_date);
             $("[name='recurring_interval']").html(html);
+            if ($(".recurring-appointments-append .ra").length == 0) {
+                let interval = $("[name='recurring_interval']").val();
+                addIntervalInAppend(interval, type);
+            } else {
+                let interval = $("[name='recurring_interval']").val();
+                addIntervalInAppend(interval, type);
+            }
         }
         // manageRecurringUntil();
     }
@@ -634,6 +659,29 @@
             $(".weekly-fields").show();
         } else {
             $(".weekly-fields").hide();
+        }
+    }
+
+    function manageMonthlyFields(type) {
+        let schedlue_date = new Date($("[name='date']").val());
+        let ordinals = ["", "first", "second", "third", "fourth", "fifth"];
+        if (type == "monthly") {
+            let day = weekday[schedlue_date.getDay()];
+            let ord = ordinals[Math.ceil(schedlue_date.getDate()/7)];
+
+            let html = ''+
+                    '<option value="first">First '+day+'</option>'+
+                    '<option value="second">Second '+day+'</option>'+
+                    '<option value="third">Third '+day+'</option>'+
+                    '<option value="fourth">Fourth '+day+'</option>'+
+                    '<option value="last">Last '+day+'</option>'+
+                '';
+            $("[name='monthly_dropdown']").html(html);
+            $("[name='monthly_dropdown']").val(ord);
+            // $(".week-days[value="+day+"]").prop('checked', true);
+            $(".monthly-fields").show();
+        } else {
+            $(".monthly-fields").hide();
         }
     }
 
@@ -660,6 +708,7 @@
         let times = $("[name='times']").val();
         let interval = $("[name='recurring_interval']").val();
         let type = $("[name='recurring_type']").val();
+        let tim = $("[name='time']").val();
         let rec_app_date;
 
         if ($(".recurring-appointments-append .ra").length == 0) {
@@ -676,77 +725,113 @@
         }
 
         if (operation == "plus") {
-            // let index = $(".recurring-appointments-append .ra").length + 1;
-            // $(".recurring-appointments-append").append(appendedHTML(index));
-            // $("#rec_app_date_"+index).datepicker("setDate", rec_app_date);
             addIntervalInAppend(interval, type);
         }
-
-        // $("[name='recurring_until']").datepicker("setDate", rec_app_date);
     }
 
     function manageWeeklyRecurringAppointments(operation) {
-        let week_start = getdate($("[name='date']").val(), 0);
-        let week_end = getdate($("[name='date']").val(), 7);
         let times = $("[name='times']").val();
+        let tim = $("[name='time']").val();
+        var d;
 
-        let days_selected = $(".week-days:checked").map(function(){
+        let weekArr = [];
+        for (let index = 0; index < times; index++) {
+            if (index == 0) {
+                if (parseInt(weekAppDate[0]) == new Date($("[name='date']").val()).getDay()) {
+                    weekAppDate.shift();
+                }
+            }
+            weekArr.push(weekAppDate[0]);
+            weekAppDate.shift();
+
+            if (weekAppDate.length == 0) {
+                weekAppDate = $(".week-days:checked").map(function(){
+                    return $(this).val();
+                }).get();
+            }
+        }
+
+        $(".recurring-appointments-append").html("");
+        $.each(weekArr , function(key, element) {
+            let appt = $(".rad").map(function(){
                 return $(this).val();
             }).get();
-        console.log(days_selected);
-        var result = [];
 
-        let start = new Date(getdate(week_start, 0));
-                let end = new Date(getdate(week_end, 0));
+            if (key == 0) {
+                d = new Date($("[name='date']").val());
+            } else {
+                d = new Date(appt[appt.length - 1]);
+            }
+            d.setDate(d.getDate() + (((parseInt(element) + 7 - d.getDay()) % 7) || 7));
 
-        for (let index = 0; index < times; index++) {
-                start = new Date(getdate(week_start, index*7));
-                end = new Date(getdate(week_end, index*7));
+            let len = $(".recurring-appointments-append .ra").length + 1;
+            $(".recurring-appointments-append").append(appendedHTML(len));
+            $("#rec_app_date_"+len).datepicker("setDate", d);
+            $("#rec_app_time_"+len).val(tim);
+        });
 
+        let until = $(".ra:last-child").find('.rad').val();
+        $("[name='recurring_until']").datepicker("setDate", new Date(until));
+    }
 
-                console.log(start);
-                console.log(end);
-            days_selected.forEach(element => {
-                console.log(element);
-                start.setDate(start.getDate() + (element - start.getDay() + 7) % 7);
+    function manageMonthlyRecurringAppointments(operation) {
+        let times = $("[name='times']").val();
+        let tim = $("[name='time']").val();
 
-                while (start <= end) {
-                    result.push(new Date(+start));
-                    start.setDate(start.getDate() + 7);
-                }
-            });
+        let interval = $("[name='recurring_interval']").val();
+        let date = $(".ra:last-child").find(".rad").val();
+        let day = new Date(date).getDay();
+        let month = Date.parse(date).addMonths(parseInt(interval)).getMonth();
+        let year = new Date(Date.parse(date).addMonths(parseInt(interval))).getFullYear();
+        let ord = $("[name='monthly_dropdown']").val();
+        let final;
+
+        let ordinals = [14, 8, 9, 10, 11, 12, 13];
+
+        if (operation == "plus") {
+            var d = new Date(year, month),
+            days = [];
+
+            d.setDate(d.getDate() + (ordinals[day] - d.getDay()) % 7)
+            while (d.getMonth() === month) {
+                days.push(new Date(d.getTime()));
+                d.setDate(d.getDate() + 7);
+            }
+
+            if (ord == "first") {
+                final = days[0];
+            }
+            if (ord == "second") {
+                final = days[1];
+            }
+            if (ord == "third") {
+                final = days[2];
+            }
+            if (ord == "fourth") {
+                final = days[3];
+            }
+            if (ord == "last") {
+                final = days[days.length - 1];
+            }
+
+            let len = $(".recurring-appointments-append .ra").length + 1;
+            $(".recurring-appointments-append").append(appendedHTML(len));
+            $("#rec_app_date_"+len).datepicker("setDate", final);
+            $("#rec_app_time_"+len).val(tim);
         }
-            // console.log(getdate(week_start, 2));
-            // console.log(getdate(week_end, 2));
-            // // days_selected.forEach(element => {
-            // //     let start = new Date(getdate(week_start, 1));
-            // //     let end = new Date(getdate(week_end, 1));
-            // //     start.setDate(start.getDate() + (element - start.getDay() + 7) % 7);
+        if (operation == "minus") {
+            $(".ra:last-child").remove();
+            final = $(".ra:last-child").find(".rad").val();
+        }
 
-            // //     while (start <= end) {
-            // //         result.push(new Date(+start));
-            // //         start.setDate(start.getDate() + 7);
-            // //     }
-            // // });
-
-            // days_selected.forEach(element => {
-            //     let start = new Date(getdate(week_start, 2));
-            //     let end = new Date(getdate(week_end, 2));
-            //     start.setDate(start.getDate() + (element - start.getDay() + 7) % 7);
-
-            //     while (start <= end) {
-            //         result.push(new Date(+start));
-            //         start.setDate(start.getDate() + 7);
-            //     }
-            // });
-
-
-        console.log(result);
+        $("[name='recurring_until']").datepicker("setDate", final);
     }
 
     function addIntervalInAppend(interval, type) {
         let schedlue_date = $("[name='date']").val();
         let times = $("[name='times']").val();
+        let tim = $("[name='time']").val();
+
         if (type == "daily") {
             $(".recurring-appointments-append").html("");
             for (let index = 1; index <= times; index++) {
@@ -757,42 +842,35 @@
             $(document).find(".rad").each(function (index, element) {
                 if (index === 0) {
                     $(element).datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
+                    $(element).closest('.ra').find('.rat').val(tim);
                 } else {
                     schedlue_date = $(element).closest('.row').prev('.row').find('.rad').val();
                     $(element).datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
+                    $(element).closest('.ra').find('.rat').val(tim);
                 }
                 if (index === total - 1) {
                     $("[name='recurring_until']").datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
+                    $(element).parent('.ra').find('.rat').val(tim);
                 }
             });
         }
         if (type == "weekly") {
-            getWeeklyAppoitnments()
-
-
-            // alert($('.week-days:checked').length);
-
-            let total = $(document).find(".rad").length;
-            // $(document).find(".rad").each(function (index, element) {
-            //     if (index === 0) {
-            //         $(element).datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
-            //     } else {
-            //         schedlue_date = $(element).closest('.row').prev('.row').find('.rad').val();
-            //         $(element).datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
-            //     }
-            //     if (index === total - 1) {
-            //         $("[name='recurring_until']").datepicker("setDate", getdate(schedlue_date, parseInt(interval)));
-            //     }
-            // });
+            getWeeklyAppoitnments();
+        }
+        if (type == "monthly") {
+            getMonthlyAppoitnments();
         }
     }
 
     function getWeeklyAppoitnments() {
         let schedlue_date = $("[name='date']").val();
         let times = $("[name='times']").val();
+        let tim = $("[name='time']").val();
         let days_selected = $(".week-days:checked").map(function(){
                 return $(this).val();
             }).get();
+
+        days_selected = days_selected.reverse();
         // alert(days_selected.length);
         // times = times*days_selected.length;
 
@@ -812,7 +890,6 @@
             }
         });
 
-        console.log(result);
         // $("[name='times']").val(times);
         $(".recurring-appointments-append").html("");
 
@@ -823,11 +900,62 @@
                 let len = $(".recurring-appointments-append .ra").length + 1;
                 $(".recurring-appointments-append").append(appendedHTML(len));
                 $("#rec_app_date_"+len).datepicker("setDate", b);
+                $("#rec_app_time_"+len).val(tim);
             }
         }
 
         times = $(".recurring-appointments-append .ra").length;
         $("[name='times']").val(times);
+
+        weekAppDate = $(".week-days:checked").map(function(){
+            return $(this).val();
+        }).get();
+    }
+
+    function getMonthlyAppoitnments() {
+        let interval = $("[name='recurring_interval']").val();
+        let day = new Date($("[name='date']").val()).getDay();
+        let month = Date.parse($("[name='date']").val()).addMonths(parseInt(interval)).getMonth();
+        let year = new Date($("[name='date']").val()).getFullYear();
+        let ord = $("[name='monthly_dropdown']").val();
+        let tim = $("[name='time']").val();
+
+        let ordinals = [14, 8, 9, 10, 11, 12, 13];
+
+        // console.log(Date.today().first().thursday());
+        var d = new Date(year, month),
+        days = [];
+
+        d.setDate(d.getDate() + (ordinals[day] - d.getDay()) % 7)
+        while (d.getMonth() === month) {
+            days.push(new Date(d.getTime()));
+            d.setDate(d.getDate() + 7);
+        }
+
+        let final;
+        if (ord == "first") {
+            final = days[0];
+        }
+        if (ord == "second") {
+            final = days[1];
+        }
+        if (ord == "third") {
+            final = days[2];
+        }
+        if (ord == "fourth") {
+            final = days[3];
+        }
+        if (ord == "last") {
+            final = days[days.length - 1];
+        }
+
+        $(".recurring-appointments-append").html("");
+        let len = $(".recurring-appointments-append .ra").length + 1;
+        $(".recurring-appointments-append").append(appendedHTML(len));
+        $("#rec_app_date_"+len).datepicker("setDate", final);
+        $("#rec_app_time_"+len).val(tim);
+
+        $("[name='recurring_until']").datepicker("setDate", final);
     }
 
     function calcExtra() {

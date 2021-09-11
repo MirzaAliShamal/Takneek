@@ -169,6 +169,15 @@
         </div>
     </div>
 
+    <div class="form-group row monthly-fields" style="display:none;">
+        <div class="col-lg-12">
+            <label class="d-block"> On:</label>
+            <select name="monthly_dropdown" id="monthly_dropdown" class="monthly-dropdown form-control">
+                <option value="" selected>Nothing Selected</option>
+            </select>
+        </div>
+    </div>
+
     <div class="form-group row recurring-fields" style="display:none;">
         <div class="col-lg-6">
             <label> Until:</label>
