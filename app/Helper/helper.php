@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\Setting;
+use App\Models\Event;
 use App\Models\User;
+use App\Models\Post;
 use App\Models\Book;
 
 
@@ -27,6 +29,34 @@ function bookUUID() {
 
 function bookUUIDExists($number) {
     return Book::where('uuid', $number)->exists();
+}
+
+function eventUUID() {
+    $no = "TK".substr(str_shuffle("A0B1C2D3E4F5G6HI7J8K9L"), 0, 10);
+
+    if (eventUUIDExists($no)) {
+        return eventUUID();
+    } else {
+        return $no;
+    }
+}
+
+function eventUUIDExists($number) {
+    return Event::where('uuid', $number)->exists();
+}
+
+function postUUID() {
+    $no = "TK".substr(str_shuffle("A0B1C2D3E4F5G6HI7J8K9L"), 0, 10);
+
+    if (postUUIDExists($no)) {
+        return postUUID();
+    } else {
+        return $no;
+    }
+}
+
+function postUUIDExists($number) {
+    return Post::where('uuid', $number)->exists();
 }
 
 function roles() {

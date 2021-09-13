@@ -2230,7 +2230,7 @@
         <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-timepicker.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-        {{-- <script src="{{ asset('assets/js/pages/crud/forms/widgets/tagify.js') }}"></script> --}}
+        <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>
 		<!--end::Page Vendors-->
 
 		<!--begin::Page Scripts(used by this page)-->
@@ -2255,6 +2255,8 @@
                         dropify();
                         datePicker();
                         timePicker();
+                        basicTagify();
+                        editor();
                         if (response.tagify) {
                             tagify(response.tagify);
                         }
@@ -2278,6 +2280,8 @@
                         dropify();
                         datePicker();
                         timePicker();
+                        basicTagify();
+                        editor();
                         if (response.tagify) {
                             tagify(response.tagify);
                         }
@@ -2343,6 +2347,10 @@
                 });
             });
 
+            function fn(text, count){
+                return text.slice(0, count) + (text.length > count ? "..." : "");
+            }
+
             function imageUploader() {
                 $('.input-images').imageUploader({
                     extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg'],
@@ -2390,7 +2398,6 @@
                 });
             }
             function tagify(data) {
-                console.log(data);
                 var toEl = document.getElementById('tagify');
                 var tagifyTo = new Tagify(toEl, {
                     delimiters: ", ", // add new tags when a comma or a space character is entered
@@ -2427,10 +2434,34 @@
                     }
                 });
             }
+            function basicTagify() {
+                var len = $(document).find('.tagify').length;
 
+                if (len > 0) {
+                    for (let index = 1; index <= len; index++) {
+                        var toEl = document.getElementById('basic_tagify_'+index);
+                        var tagifyTo = new Tagify(toEl);
+                    }
+                }
+            }
+            function editor() {
+                var len = $(document).find('#content').length;
+                if (len > 0) {
+                    ClassicEditor
+                    .create( document.querySelector( '#content' ) )
+                    .then( editor => {
+                        console.log( editor );
+                    })
+                    .catch( error => {
+                        console.error( error );
+                    });
+                }
+            }
 
-            datePicker();
             selectPicker();
+            basicTagify();
+            datePicker();
+            editor();
             tagify();
         </script>
     @yield('js')

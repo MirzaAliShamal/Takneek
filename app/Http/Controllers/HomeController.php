@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Coworking;
 use App\Models\Booking;
 use App\Models\Extra;
+use App\Models\Event;
 use App\Models\User;
 
 class HomeController extends Controller
@@ -83,6 +84,20 @@ class HomeController extends Controller
             // dd($customers);
 
             return view('back.ajax.customers', get_defined_vars());
+        } else {
+            abort(404);
+        }
+    }
+
+    public function getEventGuest(Request $req)
+    {
+        $list = [];
+        if ($req->ajax()) {
+            $event = Event::where('uuid', $req->id)->first();
+            $guests = $event->event_guests;
+            // dd($customers);
+
+            return view('back.ajax.guests', get_defined_vars());
         } else {
             abort(404);
         }

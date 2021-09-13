@@ -24,6 +24,7 @@ Route::get('/get-permission', 'HomeController@getPermission')->name('get.permiss
 Route::get('/get-service', 'HomeController@getService')->name('get.service');
 Route::get('/get-extras', 'HomeController@getExtras')->name('get.extras');
 Route::get('/get-booking-customer', 'HomeController@getBookingCustomer')->name('get.booking.customer');
+Route::get('/get-event-guest', 'HomeController@getEventGuest')->name('get.event.guest');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
@@ -124,6 +125,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id?}', 'EquipmentController@edit')->name('edit');
         Route::post('/save/{id?}', 'EquipmentController@save')->name('save');
         Route::get('/delete/{id?}', 'EquipmentController@delete')->name('delete');
+    });
+
+    Route::prefix('post-categories')->name('post.category.')->group(function () {
+        Route::get('/list', 'PostCategoryController@list')->name('list');
+        Route::get('/add', 'PostCategoryController@add')->name('add');
+        Route::get('/edit/{id?}', 'PostCategoryController@edit')->name('edit');
+        Route::post('/save/{id?}', 'PostCategoryController@save')->name('save');
+        Route::get('/delete/{id?}', 'PostCategoryController@delete')->name('delete');
+    });
+
+    Route::prefix('posts')->name('post.')->group(function () {
+        Route::get('/list', 'PostController@list')->name('list');
+        Route::get('/add', 'PostController@add')->name('add');
+        Route::get('/edit/{id?}', 'PostController@edit')->name('edit');
+        Route::post('/save/{id?}', 'PostController@save')->name('save');
+        Route::get('/delete/{id?}', 'PostController@delete')->name('delete');
     });
 
 });

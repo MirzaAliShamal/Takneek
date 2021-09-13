@@ -1027,21 +1027,9 @@
 
         if (operation == "plus") {
             newdate.setDate(newdate.getDate() + parseInt(days));
-            // if (type == "daily") {
-            //     newdate.setDate(newdate.getDate() + parseInt(days));
-            // }
-            // if (type == "weekly") {
-            //     newdate.setDate(newdate.getDate() + 7 * parseInt(days));
-            // }
         }
         if (operation == "minus") {
             newdate.setDate(newdate.getDate() - parseInt(days));
-            // if (type == "daily") {
-            //     newdate.setDate(newdate.getDate() - parseInt(days));
-            // }
-            // if (type == "weekly") {
-            //     newdate.setDate(newdate.getDate() - 7 * parseInt(days));
-            // }
         }
 
         var dd = newdate.getDate();
